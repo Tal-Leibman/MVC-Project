@@ -20,12 +20,12 @@ namespace MVC_Project.Data
         {   
             modelBuilder.Entity<Product>()
             .HasOne(p => p.Seller)
-            .WithMany(b => b.Products)
+            .WithMany(b => b.ProductsSold)
             .HasForeignKey(p => p.SellerId);
 
             modelBuilder.Entity<Product>()
             .HasOne(p => p.Buyer)
-            .WithMany(b => b.Products2)
+            .WithMany(b => b.Productsbought)
             .HasForeignKey(p => p.BuyerId);
         }
     }
