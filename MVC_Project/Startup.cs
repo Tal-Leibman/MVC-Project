@@ -66,35 +66,35 @@ namespace MVC_Project
                 Id = 1 ,
                 FileName = "test_image_1.jpg",
             };
-            var anonymousUser = new User()
+            var test_user_1 = new User()
             {
+                //UserId = 1,
+                Id = Guid.NewGuid().ToString(),
                 FirstName = "anonymous",
                 LastName = "anonymous",
                 BirthDate = DateTime.Now,
                 Email = "anonymous@gmail.com",
-                Username = "anonymous",
-                PasswordHash = "0000",
-                Id = 1
+                UserName = "anonymous",
             };
-            var test_user_1 = new User()
+            var test_user_2 = new User()
             {
+                //UserId = 2,
+                Id = Guid.NewGuid().ToString(),
                 FirstName = "Pepe",
                 LastName = "Kek",
                 BirthDate = DateTime.Now,
                 Email = "pepe_keke@gmail.com",
-                Username = "Frog",
-                PasswordHash = "1234",
-                Id = 2
+                UserName = "Frog",
             };
-            var test_user_2 = new User()
-            {
+            var test_user_3 = new User()
+            {   
+                //UserId = 3,
+                Id = Guid.NewGuid().ToString(),
                 FirstName = "Samwise",
                 LastName = "Gamgee",
                 BirthDate = DateTime.Now,
                 Email = "bigMistake@gmail.com",
-                Username = "garden122",
-                PasswordHash = "1234",
-                Id = 3
+                UserName = "garden122",
             };
             var test_prod_1 = new Product()
             {
@@ -102,15 +102,15 @@ namespace MVC_Project
                 Date = DateTime.Now,
                 LongDescription = "jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.",
                 ShortDescription = "Trysail Sail ho Corsair red ensign hulk smartly",
-                SellerId = 1,
-                BuyerId = 2,
+                SellerId = test_user_2.Id,
+                BuyerId = test_user_3.Id,
                 Price = 100.456,
                 State = Product.States.Available,
                 Title = "Spoon",
             };
-            context.Users.Add(anonymousUser);
             context.Users.Add(test_user_1);
             context.Users.Add(test_user_2);
+            context.Users.Add(test_user_3);
             context.Products.Add(test_prod_1);
             context.ProductImages.Add(test_image);
             context.SaveChanges();
