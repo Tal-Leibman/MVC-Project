@@ -1,15 +1,21 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - MVC_Project</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - MVC_Project</title>
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-
+	<link rel="stylesheet" href="~/vendor-styles/vendor.css" />
+	<link rel="stylesheet" href="~/styles/styles.css" />
 </head>
 <body>
-    @RenderBody()
+	<nav class="proj-header">
+		<a asp-controller="Home" asp-action="Index" class="navbar-brand">Home</a>
+		<a asp-controller="Home" asp-action="Index" class="navbar-brand">Something</a>
+		<a asp-controller="Home" asp-action="Index" class="navbar-brand">Memes</a>
+	</nav>
+	<div class="proj-body-container">
+		@RenderBody()
+	</div>
 </body>
 </html>

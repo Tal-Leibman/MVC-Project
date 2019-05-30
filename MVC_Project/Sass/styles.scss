@@ -1,0 +1,36 @@
+﻿$header-height: 50px;
+$header-button-width: 120px;
+$header-button-font-size: 20px;
+$body-container-top-border: 2px;
+
+.proj-header {
+	width: 100%;
+	left: 0px;
+	top: 0px;
+	height: $header-height;
+	position: fixed;
+	border-bottom: 2px solid darkgray;
+	padding: 0px;
+	font-size: 0;
+
+	a {
+		position: static;
+		width: $header-button-width;
+		line-height: ($header-button-width - $header-button-font-size)/2;
+		font-size: $header-button-font-size;
+		text-align: center;
+		height: 100%;
+		border-left: 1.5px solid whitesmoke;
+		border-right: 1.5px solid whitesmoke;
+		padding: 0px;
+		margin: 0px;
+	}
+}
+
+.proj-body-container {
+	margin-top: $header-height;
+	border-top: 2px solid black;
+	width: 100%;
+	height: 200px;
+	background-color: red;
+}
