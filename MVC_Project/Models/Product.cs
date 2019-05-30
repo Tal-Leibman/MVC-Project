@@ -33,10 +33,10 @@ namespace MVC_Project.Models
         public States State { get; set; }
 
         [HiddenInput(DisplayValue = false)]
-        public long SellerId { get; set; }
+        public string SellerId { get; set; }
 
         [HiddenInput(DisplayValue = false)]
-        public long? BuyerId { get; set; }
+        public string BuyerId { get; set; }
 
         public virtual User Seller { get; set; }
 

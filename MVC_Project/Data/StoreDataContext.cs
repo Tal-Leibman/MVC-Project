@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MVC_Project.Models;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace MVC_Project.Data
 {
-    public class StoreDataContext : DbContext
+    public class StoreDataContext : IdentityDbContext<User>
     {
-        public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public StoreDataContext(DbContextOptions<StoreDataContext> options) : base(options)
@@ -17,7 +17,11 @@ namespace MVC_Project.Data
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {   
+        {
+            base.OnModelCreating(modelBuilder);
+
+            //modelBuilder.Entity<User>().HasKey(user => user.UserId);
+
             modelBuilder.Entity<Product>()
             .HasOne(product => product.Seller)
             .WithMany(seller => seller.ProductsSold)
