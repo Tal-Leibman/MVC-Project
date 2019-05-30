@@ -1,13 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace MVC_Project.Models
 {
     public class User
     {
+        public User()
+        {
+                
+        }
         [HiddenInput(DisplayValue = false)]
-        public long ID { get; set; }
+        public long Id { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -36,5 +41,9 @@ namespace MVC_Project.Models
 
         [HiddenInput(DisplayValue = false)]
         public string PasswordHash { get; set; }
+
+        public List<Product> Products { get; set; }
+        public List<Product> Products2 { get; set; }
+
     }
 }

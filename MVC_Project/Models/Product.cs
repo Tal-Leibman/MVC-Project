@@ -1,23 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVC_Project.Models
 {
     public class Product
     {
-        enum States : byte { Available, Reserved, Sold }
+        public Product()
+        {
 
-        [Required]
-        [HiddenInput(DisplayValue = false)]
-        public long ID { get; set; }
-
-        [Required]
-        [HiddenInput(DisplayValue = false)]
-        public long OwnerID { get; set; }
+        }
+        public enum States : byte { Available, Reserved, Sold }
 
         [HiddenInput(DisplayValue = false)]
-        public long UserID { get; set; }
+        public long Id { get; set; }
 
         [Required]
         public string Title { get; set; }
@@ -30,19 +28,21 @@ namespace MVC_Project.Models
         [Display(Name = "Long Description")]
         public string LongDescription { get; set; }
 
-        [Required]
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
-        [Required]
         [DataType(DataType.Currency)]
         public double Price { get; set; }
 
         [HiddenInput(DisplayValue = false)]
-        public byte[][] Images { get; set; }
+        public List<ProductImage> ProductImages { get; set; }
 
-        [Required]
         [HiddenInput(DisplayValue = false)]
-        public byte State { get; set; }
+        public States State { get; set; }
+
+        public long SellerId { get; set; }
+        public long? BuyerId { get; set; }
+        public virtual User Seller { get; set; }
+        public virtual User Buyer { get; set; }
     }
 }
