@@ -38,10 +38,12 @@ namespace MVC_Project
             });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env , StoreDataContext dataContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, StoreDataContext dataContext)
         {
             if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
+            }
 
             dataContext.Database.EnsureDeleted();
             dataContext.Database.EnsureCreated();
@@ -87,7 +89,7 @@ namespace MVC_Project
             };
             var test_prod_1 = new Product()
             {
-                Id = 0,
+                Id = 1,
                 Date = DateTime.Now,
                 LongDescription = "jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.",
                 ShortDescription = "Trysail Sail ho Corsair red ensign hulk smartly",
@@ -98,14 +100,10 @@ namespace MVC_Project
                 Title = "Spoon"
             };
             context.Users.Add(anonymousUser);
-            context.SaveChanges();
             context.Users.Add(test_user_1);
-            context.SaveChanges();
             context.Users.Add(test_user_2);
-            context.SaveChanges();
             context.Products.Add(test_prod_1);
             context.SaveChanges();
         }
-
     }
 }
