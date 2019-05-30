@@ -19,14 +19,19 @@ namespace MVC_Project.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {   
             modelBuilder.Entity<Product>()
-            .HasOne(p => p.Seller)
-            .WithMany(b => b.ProductsSold)
-            .HasForeignKey(p => p.SellerId);
+            .HasOne(product => product.Seller)
+            .WithMany(seller => seller.ProductsSold)
+            .HasForeignKey(product => product.SellerId);
 
             modelBuilder.Entity<Product>()
-            .HasOne(p => p.Buyer)
-            .WithMany(b => b.Productsbought)
-            .HasForeignKey(p => p.BuyerId);
+            .HasOne(product => product.Buyer)
+            .WithMany(buyer => buyer.ProductsBought)
+            .HasForeignKey(product => product.BuyerId);
+            
+            modelBuilder.Entity<ProductImage>()
+            .HasOne(image=> image.Product)
+            .WithMany(product => product.ProductImages)
+            .HasForeignKey(image => image.ProductId);
         }
     }
 }

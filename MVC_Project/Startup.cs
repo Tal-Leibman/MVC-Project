@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MVC_Project.Data;
 using Microsoft.EntityFrameworkCore;
 using MVC_Project.Models;
+using System.IO;
 
 namespace MVC_Project
 {
@@ -47,7 +48,7 @@ namespace MVC_Project
 
             dataContext.Database.EnsureDeleted();
             dataContext.Database.EnsureCreated();
-            SeedDataBase(dataContext);
+            SeedDataBase(dataContext, env);
 
             app.UseHttpsRedirection();
 
@@ -55,8 +56,16 @@ namespace MVC_Project
             app.UseCookiePolicy();
             app.UseMvcWithDefaultRoute();
         }
-        private void SeedDataBase(StoreDataContext context)
+        private void SeedDataBase(StoreDataContext context, IHostingEnvironment env)
         {
+            byte[] byteArray = File.ReadAllBytes($"{env.ContentRootPath}\\wwwroot\\images\\test_image_1.jpg");
+            var test_image = new ProductImage()
+            {
+                ByteArray = byteArray,
+                ProductId = 1 ,
+                Id = 1 ,
+                FileName = "test_image_1.jpg",
+            };
             var anonymousUser = new User()
             {
                 FirstName = "anonymous",
@@ -79,11 +88,11 @@ namespace MVC_Project
             };
             var test_user_2 = new User()
             {
-                FirstName = "Pepe",
-                LastName = "Kek",
+                FirstName = "Samwise",
+                LastName = "Gamgee",
                 BirthDate = DateTime.Now,
-                Email = "pepe_keke@gmail.com",
-                Username = "Frog",
+                Email = "bigMistake@gmail.com",
+                Username = "garden122",
                 PasswordHash = "1234",
                 Id = 3
             };
@@ -97,12 +106,13 @@ namespace MVC_Project
                 BuyerId = 2,
                 Price = 100.456,
                 State = Product.States.Available,
-                Title = "Spoon"
+                Title = "Spoon",
             };
             context.Users.Add(anonymousUser);
             context.Users.Add(test_user_1);
             context.Users.Add(test_user_2);
             context.Products.Add(test_prod_1);
+            context.ProductImages.Add(test_image);
             context.SaveChanges();
         }
     }
