@@ -11,20 +11,24 @@ namespace MVC_Project.Controllers
 {
     public class HomeController : Controller
     {
-        private StoreDataContext dataContext;
+        private StoreDataContext _dataContext;
+
         public HomeController(StoreDataContext dataContext)
         {
-            this.dataContext = dataContext;
+            _dataContext = dataContext;
         }
+
         public IActionResult Index()
         {
-            return View(dataContext.Products.ToList());
+            return View(_dataContext.Products.ToList());
         }
+
         public IActionResult ProductDetails(string id)
         {
-            Product product = dataContext.Products.Find(id);
+            Product product = _dataContext.Products.Find(id);
             return product != null ? View(product) : (IActionResult)RedirectToAction("Error");
         }
+
         public IActionResult AddProduct()
         {
             return View();
@@ -33,8 +37,8 @@ namespace MVC_Project.Controllers
         [HttpPost]
         public IActionResult AddProduct(Product product)
         {
-            dataContext.Products.Add(product);
-            dataContext.SaveChanges();
+            _dataContext.Products.Add(product);
+            _dataContext.SaveChanges();
             return RedirectToAction("Index");
         }
 

@@ -19,12 +19,10 @@ namespace MVC_Project
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public IConfiguration Configuration { get; }
+
+        public Startup(IConfiguration configuration)
+        { Configuration = configuration; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -33,21 +31,18 @@ namespace MVC_Project
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
             services.AddDbContext<StoreDataContext>(options =>
-            {
-                options.UseSqlite("DataSource=storeData.db");
-            });
+            { options.UseSqlite("DataSource=storeData.db"); });
+
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<StoreDataContext>();
             services.AddMvc();
-
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, StoreDataContext dataContext)
         {
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
 
             dataContext.Database.EnsureDeleted();
             dataContext.Database.EnsureCreated();
@@ -60,16 +55,18 @@ namespace MVC_Project
             app.UseAuthentication();
             app.UseMvcWithDefaultRoute();
         }
+
         private void SeedDataBase(StoreDataContext context, IHostingEnvironment env)
         {
-            byte[] byteArray = File.ReadAllBytes($"{env.ContentRootPath}\\wwwroot\\images\\test_image_1.jpg");
             var test_image = new ProductImage()
             {
-                ByteArray = byteArray,
+                ByteArray = File.ReadAllBytes($"{env.ContentRootPath}\\wwwroot\\images\\test_image_1.jpg"),
                 ProductId = 1,
                 Id = 1,
                 FileName = "test_image_1.jpg",
             };
+            context.ProductImages.Add(test_image);
+
             var test_user_1 = new User()
             {
                 //UserId = 1,
@@ -100,6 +97,10 @@ namespace MVC_Project
                 Email = "bigMistake@gmail.com",
                 UserName = "garden122",
             };
+            context.Users.Add(test_user_1);
+            context.Users.Add(test_user_2);
+            context.Users.Add(test_user_3);
+
             var test_prod_1 = new Product()
             {
                 Id = 1,
@@ -112,11 +113,34 @@ namespace MVC_Project
                 State = Product.States.Available,
                 Title = "Spoon",
             };
-            context.Users.Add(test_user_1);
-            context.Users.Add(test_user_2);
-            context.Users.Add(test_user_3);
+            var test_prod_2 = new Product()
+            {
+                Id = 2,
+                Date = DateTime.Now,
+                LongDescription = "l o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o n g description.",
+                ShortDescription = "shrt desc.",
+                SellerId = test_user_3.Id,
+                BuyerId = test_user_2.Id,
+                Price = 420.69,
+                State = Product.States.Available,
+                Title = "A pile of shit",
+            };
+            var test_prod_3 = new Product()
+            {
+                Id = 3,
+                Date = DateTime.Now,
+                LongDescription = "l o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o n g description.",
+                ShortDescription = "Trysail Sail ho Corsair red ensign hulk smartly",
+                SellerId = test_user_1.Id,
+                BuyerId = test_user_1.Id,
+                Price = 1337.322,
+                State = Product.States.Available,
+                Title = "A bent spoon",
+            };
             context.Products.Add(test_prod_1);
-            context.ProductImages.Add(test_image);
+            context.Products.Add(test_prod_2);
+            context.Products.Add(test_prod_3);
+
             context.SaveChanges();
         }
     }
