@@ -13,6 +13,7 @@ using MVC_Project.Data;
 using Microsoft.EntityFrameworkCore;
 using MVC_Project.Models;
 using System.IO;
+using Microsoft.AspNetCore.Identity;
 
 namespace MVC_Project
 {
@@ -32,11 +33,13 @@ namespace MVC_Project
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            services.AddMvc();
             services.AddDbContext<StoreDataContext>(options =>
             {
                 options.UseSqlite("DataSource=storeData.db");
             });
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<StoreDataContext>();
+            services.AddMvc();
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, StoreDataContext dataContext)
@@ -54,6 +57,7 @@ namespace MVC_Project
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
             app.UseMvcWithDefaultRoute();
         }
         private void SeedDataBase(StoreDataContext context, IHostingEnvironment env)
@@ -62,8 +66,8 @@ namespace MVC_Project
             var test_image = new ProductImage()
             {
                 ByteArray = byteArray,
-                ProductId = 1 ,
-                Id = 1 ,
+                ProductId = 1,
+                Id = 1,
                 FileName = "test_image_1.jpg",
             };
             var test_user_1 = new User()
@@ -87,7 +91,7 @@ namespace MVC_Project
                 UserName = "Frog",
             };
             var test_user_3 = new User()
-            {   
+            {
                 //UserId = 3,
                 Id = Guid.NewGuid().ToString(),
                 FirstName = "Samwise",
