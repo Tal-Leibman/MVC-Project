@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MVC_Project.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MVC_Project.Data
 {
@@ -20,8 +16,6 @@ namespace MVC_Project.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            //modelBuilder.Entity<User>().HasKey(user => user.UserId);
-
             modelBuilder.Entity<Product>()
             .HasOne(product => product.Seller)
             .WithMany(seller => seller.ProductsSold)
@@ -31,9 +25,9 @@ namespace MVC_Project.Data
             .HasOne(product => product.Buyer)
             .WithMany(buyer => buyer.ProductsBought)
             .HasForeignKey(product => product.BuyerId);
-            
+
             modelBuilder.Entity<ProductImage>()
-            .HasOne(image=> image.Product)
+            .HasOne(image => image.Product)
             .WithMany(product => product.ProductImages)
             .HasForeignKey(image => image.ProductId);
         }
