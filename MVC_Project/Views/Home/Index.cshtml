@@ -2,11 +2,11 @@
 	ViewData["Title"] = "Home Page";
 }
 
-<div class="productListContainer">
-	@*@foreach (Product product in Model)*@
+@model List<Product>
+
+<div class="product-list-container">
+	@foreach (Product product in Model)
 	{
-		<div class="productContainer">
-			@*@await Component.InvokeAsync("Post", product)*@
-		</div>
+		@await Component.InvokeAsync("PostMini", product)
 	}
 </div>
