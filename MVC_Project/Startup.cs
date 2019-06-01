@@ -71,7 +71,6 @@ namespace MVC_Project
 
             var test_user_1 = new User()
             {
-                //UserId = 1,
                 Id = Guid.NewGuid().ToString(),
                 FirstName = "anonymous",
                 LastName = "anonymous",
@@ -81,7 +80,6 @@ namespace MVC_Project
             };
             var test_user_2 = new User()
             {
-                //UserId = 2,
                 Id = Guid.NewGuid().ToString(),
                 FirstName = "Pepe",
                 LastName = "Kek",
@@ -91,7 +89,6 @@ namespace MVC_Project
             };
             var test_user_3 = new User()
             {
-                //UserId = 3,
                 Id = Guid.NewGuid().ToString(),
                 FirstName = "Samwise",
                 LastName = "Gamgee",

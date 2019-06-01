@@ -23,6 +23,7 @@ namespace MVC_Project.Controllers
         public IActionResult Index()
         {
             dataContext.CheckReservedProducts(resrevedTimeOut);
+            dataContext.SaveChanges();
             return View(dataContext.Products.ToList());
         }
 
