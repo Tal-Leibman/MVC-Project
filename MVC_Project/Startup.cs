@@ -14,6 +14,8 @@ using Microsoft.EntityFrameworkCore;
 using MVC_Project.Models;
 using System.IO;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Hosting;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace MVC_Project
 {
@@ -31,15 +33,15 @@ namespace MVC_Project
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
             services.AddDbContext<StoreDataContext>(options =>
             { options.UseSqlite("DataSource=storeData.db"); });
+
 
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<StoreDataContext>();
             services.AddMvc();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, StoreDataContext dataContext)
+        public  void Configure(IApplicationBuilder app, IHostingEnvironment env, StoreDataContext dataContext)
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
@@ -69,7 +71,6 @@ namespace MVC_Project
 
             var test_user_1 = new User()
             {
-                //UserId = 1,
                 Id = Guid.NewGuid().ToString(),
                 FirstName = "anonymous",
                 LastName = "anonymous",
@@ -79,7 +80,6 @@ namespace MVC_Project
             };
             var test_user_2 = new User()
             {
-                //UserId = 2,
                 Id = Guid.NewGuid().ToString(),
                 FirstName = "Pepe",
                 LastName = "Kek",
@@ -89,7 +89,6 @@ namespace MVC_Project
             };
             var test_user_3 = new User()
             {
-                //UserId = 3,
                 Id = Guid.NewGuid().ToString(),
                 FirstName = "Samwise",
                 LastName = "Gamgee",
@@ -105,13 +104,14 @@ namespace MVC_Project
             {
                 Id = 1,
                 Date = DateTime.Now,
+                LastInteraction = DateTime.Now,
                 LongDescription = "jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.",
                 ShortDescription = "Trysail Sail ho Corsair red ensign hulk smartly",
                 SellerId = test_user_2.Id,
                 BuyerId = test_user_3.Id,
                 Price = 100.456,
-                State = Product.States.Available,
-                Title = "Spoon",
+                State = Product.States.Reserved,
+                Title = "Spoon"
             };
             var test_prod_2 = new Product()
             {

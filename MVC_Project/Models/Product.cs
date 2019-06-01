@@ -23,6 +23,8 @@ namespace MVC_Project.Models
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
+        public DateTime LastInteraction { get; set; }
+
         [DataType(DataType.Currency)]
         public double Price { get; set; }
 

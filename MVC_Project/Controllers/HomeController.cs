@@ -11,21 +11,25 @@ namespace MVC_Project.Controllers
 {
     public class HomeController : Controller
     {
-        private StoreDataContext _dataContext;
+        private StoreDataContext dataContext;
+        private TimeSpan resrevedTimeOut;
 
         public HomeController(StoreDataContext dataContext)
         {
-            _dataContext = dataContext;
+            this.dataContext = dataContext;
+            resrevedTimeOut = new TimeSpan(0, 0, 2);
         }
 
         public IActionResult Index()
         {
-            return View(_dataContext.Products.ToList());
+            dataContext.CheckReservedProducts(resrevedTimeOut);
+            dataContext.SaveChanges();
+            return View(dataContext.Products.ToList());
         }
 
         public IActionResult ProductDetails(string id)
         {
-            Product product = _dataContext.Products.Find(id);
+            Product product = dataContext.Products.Find(id);
             return product != null ? View(product) : (IActionResult)RedirectToAction("Error");
         }
 
@@ -37,8 +41,8 @@ namespace MVC_Project.Controllers
         [HttpPost]
         public IActionResult AddProduct(Product product)
         {
-            _dataContext.Products.Add(product);
-            _dataContext.SaveChanges();
+            dataContext.Products.Add(product);
+            dataContext.SaveChanges();
             return RedirectToAction("Index");
         }
 

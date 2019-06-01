@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MVC_Project.Models;
+using System;
+using System.Linq;
+using System.Threading;
 
 namespace MVC_Project.Data
 {
@@ -8,9 +11,9 @@ namespace MVC_Project.Data
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
+
         public StoreDataContext(DbContextOptions<StoreDataContext> options) : base(options)
         {
-
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,6 +33,17 @@ namespace MVC_Project.Data
             .HasOne(image => image.Product)
             .WithMany(product => product.ProductImages)
             .HasForeignKey(image => image.ProductId);
+        }
+
+        public  void CheckReservedProducts(TimeSpan timeout)
+        {
+            var productsToClear = Products
+                .Where(p => p.State == Product.States.Reserved)
+                .Where(p => DateTime.Now.Subtract(p.LastInteraction) > timeout);
+            foreach (Product product in productsToClear)
+            {
+                product.State = Product.States.Available;
+            }
         }
     }
 }
