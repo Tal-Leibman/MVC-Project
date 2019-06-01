@@ -16,6 +16,7 @@ using System.IO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Hosting;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using MVC_Project.Services;
 
 namespace MVC_Project
 {
@@ -33,15 +34,17 @@ namespace MVC_Project
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
             services.AddDbContext<StoreDataContext>(options =>
             { options.UseSqlite("DataSource=storeData.db"); });
 
+            services.AddTransient<IImageConverter, ImageConverter>();
 
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<StoreDataContext>();
             services.AddMvc();
         }
 
-        public  void Configure(IApplicationBuilder app, IHostingEnvironment env, StoreDataContext dataContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, StoreDataContext dataContext)
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
@@ -63,7 +66,7 @@ namespace MVC_Project
             var test_image = new ProductImage()
             {
                 ByteArray = File.ReadAllBytes($"{env.ContentRootPath}\\wwwroot\\images\\test_image_1.jpg"),
-                ProductId = 1,
+                ProductId = 2,
                 Id = 1,
                 FileName = "test_image_1.jpg",
             };
@@ -124,6 +127,7 @@ namespace MVC_Project
                 Price = 420.69,
                 State = Product.States.Available,
                 Title = "A pile of shit",
+                ProductImageId = 1
             };
             var test_prod_3 = new Product()
             {

@@ -52,22 +52,44 @@ $body-container-top-border: 2px;
 	}
 
 	.title-container {
-		font-size: 20px;
-		text-align: center;
 		border-radius: 5px 5px 0px 0px;
 	}
 
-	.details-container {
-		font-size: 10px;
-		color: lightgray;
-	}
-
-	.price-container {
-		font-size: 14px;
-	}
-
 	.short-description-container {
-		font-size: 12px;
 		border-radius: 0px 0px 5px 5px;
 	}
+}
+
+.product-details-container {
+	display: inline-block;
+	background-color: white;
+	border-radius: 5px;
+	padding: 5px;
+	margin: 5px 30% 5px 30%;
+	min-width:300px;
+
+	span {
+		display: block;
+		padding: 5px;
+		color: black;
+		background-color: whitesmoke;
+	}
+}
+
+.title-container {
+	font-size: 20px;
+	text-align: center;
+}
+
+.details-container {
+	font-size: 10px;
+	color: lightgray;
+}
+
+.price-container {
+	font-size: 14px;
+}
+
+.short-description-container {
+	font-size: 12px;
 }

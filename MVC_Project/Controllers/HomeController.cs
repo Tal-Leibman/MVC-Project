@@ -24,10 +24,10 @@ namespace MVC_Project.Controllers
         {
             dataContext.CheckReservedProducts(resrevedTimeOut);
             dataContext.SaveChanges();
-            return View(dataContext.Products.ToList());
+            return View(dataContext.Products.Where(p => p.State == Product.States.Available).ToList());
         }
 
-        public IActionResult ProductDetails(string id)
+        public IActionResult ProductDetails(long id)
         {
             Product product = dataContext.Products.Find(id);
             return product != null ? View(product) : (IActionResult)RedirectToAction("Error");

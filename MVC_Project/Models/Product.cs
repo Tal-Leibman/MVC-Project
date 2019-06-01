@@ -28,7 +28,9 @@ namespace MVC_Project.Models
         [DataType(DataType.Currency)]
         public double Price { get; set; }
 
-        public List<ProductImage> ProductImages { get; set; }
+        public virtual long ProductImageId { get; set; }
+
+        public virtual ProductImage ProductImage { get; set; }
 
         [HiddenInput(DisplayValue = false)]
         public States State { get; set; }

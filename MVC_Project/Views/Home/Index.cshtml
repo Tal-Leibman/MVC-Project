@@ -1,15 +1,12 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
 }
 
 @model List<Product>
 
 <div class="product-list-container">
-    @foreach (Product product in Model)
-    {
-        if (product.State == Product.States.Available)
-        {
-            @await Component.InvokeAsync("PostMini", product)
-        }
-    }
+	@foreach (Product product in Model)
+	{
+		@await Component.InvokeAsync("PostMini", product)
+	}
 </div>

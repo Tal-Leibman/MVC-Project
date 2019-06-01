@@ -29,13 +29,18 @@ namespace MVC_Project.Data
             .WithMany(buyer => buyer.ProductsBought)
             .HasForeignKey(product => product.BuyerId);
 
-            modelBuilder.Entity<ProductImage>()
-            .HasOne(image => image.Product)
-            .WithMany(product => product.ProductImages)
-            .HasForeignKey(image => image.ProductId);
+            //modelBuilder.Entity<ProductImage>()
+            //.HasOne(image => image.Product)
+            //.WithOne(product => product.ProductImage)
+            //.HasForeignKey(image => image.ProductId);
+
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.ProductImage)
+                .WithOne(i => i.Product)
+                .HasForeignKey<ProductImage>(i => i.ProductId);
         }
 
-        public  void CheckReservedProducts(TimeSpan timeout)
+        public void CheckReservedProducts(TimeSpan timeout)
         {
             var productsToClear = Products
                 .Where(p => p.State == Product.States.Reserved)
