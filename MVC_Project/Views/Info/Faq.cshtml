@@ -1,0 +1,13 @@
+﻿
+@{ ViewData["Title"] = "FAQ"; }
+@model string[][]
+
+<div class="jumbotron">
+	<h1 class="display-4">Frequently Asked Questions:</h1>
+	@foreach (string[] faq in Model)
+	{
+		<hr class="my-4">
+		<p class="lead">@faq[0]</p>
+		<p>@faq[1]</p>
+	}
+</div>

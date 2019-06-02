@@ -5,18 +5,18 @@ namespace MVC_Project.Services
 {
     public interface IImageConverter
     {
-        bool ToProductImage(string path, out Image pImage);
+        bool ToImage(string path, out Image image);
     }
 
     public class ImageConverter : IImageConverter
     {
-        public bool ToProductImage(string path, out Image pImage)
+        public bool ToImage(string path, out Image image)
         {
-            pImage = default;
+            image = default;
             if (!File.Exists(path))
                 return false;
 
-            pImage = new Image
+            image = new Image
             {
                 ByteArray = File.ReadAllBytes(path),
                 FileName = Path.GetFileName(path),
