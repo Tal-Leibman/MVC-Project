@@ -1,11 +1,28 @@
 ﻿
-@{
-	ViewData["Title"] = "ProductDetails";
-}
-
+@{ ViewData["Title"] = "ProductDetails"; }
 @model Product
 
-			}
-    <a value="Add To Cart" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id.ToString()">
-    </a>
-        Add To Cart
+<div class="product-details-container">
+    <div class="card-body bg-light text-center">
+        <h5 class="card-header">@Model.Title</h5>
+        @{
+            if (Model.Images?.Count > 0)
+            {
+                string base64 = Convert.ToBase64String(Model.Images.ElementAt(0).ByteArray);
+                <img src=@String.Format("data:image/jpg;base64,{0}", base64) />
+            }
+            else
+            {
+                <img src="..." class="card-img-top" alt="no-image">
+            }
+        }
+        <p class="card-text">@Model.LongDescription</p>
+        <div class="card-footer text-muted">
+            Price: @Model.Price
+        </div>
+        <div class="card-footer text-muted">
+            Added by @Model.SellerId@*.UserName*@ at @Model.Date.ToString("MMMM dd yyyy")
+        </div>
+    </div>
+    <a value="Add To Cart" class="btn btn-primary btn-lg btn-block" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id">Add to cart...</a>
+</div>
