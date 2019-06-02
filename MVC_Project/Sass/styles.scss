@@ -1,5 +1,5 @@
 ﻿$header-height: 50px;
-$header-button-width: 120px;
+$header-button-width: 130px;
 $header-button-font-size: 20px;
 $body-container-top-border: 2px;
 
@@ -15,6 +15,7 @@ body {
 	position: fixed;
 	padding: 0px;
 	font-size: 0;
+	background-color: whitesmoke;
 
 	a {
 		position: static;
@@ -23,9 +24,20 @@ body {
 		font-size: $header-button-font-size;
 		text-align: center;
 		height: 100%;
-		border-left: 1.5px solid whitesmoke;
-		border-right: 1.5px solid whitesmoke;
+		border-left: 1px solid lightgray;
+		border-right: 1px solid lightgray;
 		padding: 0px;
+		margin: 0px;
+	}
+
+	span {
+		position: static;
+		line-height: ($header-button-width - $header-button-font-size)/2;
+		font-size: $header-button-font-size;
+		text-align: center;
+		height: 100%;
+		border-left: 1px solid lightgray;
+		padding: 0 0 0 20px;
 		margin: 0px;
 	}
 }

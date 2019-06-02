@@ -31,8 +31,8 @@ namespace MVC_Project.Controllers
             return View(
                 _dataContext
                 .Products
-                .Include(p=> p.Seller)
-                .Include(p=> p.Images)
+                .Include(p => p.Seller)
+                .Include(p => p.Images)
                 .Where(p => p.State == Product.States.Available)
                 .ToList()
                 );
@@ -40,7 +40,11 @@ namespace MVC_Project.Controllers
 
         public IActionResult ProductDetails(long id)
         {
-            Product product = _dataContext.Products.Find(id);
+            Product product = _dataContext
+                   .Products
+                   .Include(p => p.Seller)
+                   .Include(p => p.Images)
+                   .FirstOrDefault(p => p.Id == id);
             return product != null ? View(product) : (IActionResult)RedirectToAction("Error");
         }
 
