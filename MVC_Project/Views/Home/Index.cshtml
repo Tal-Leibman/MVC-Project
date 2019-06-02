@@ -4,7 +4,7 @@
 
 @model List<Product>
 
-<div class="product-list-container">
+<div class="card-columns">
 	@foreach (Product product in Model)
 	{
 		@await Component.InvokeAsync("PostMini", product)
