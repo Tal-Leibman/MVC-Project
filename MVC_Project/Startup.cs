@@ -36,6 +36,7 @@ namespace MVC_Project
             services.AddTransient<IImageConverter, ImageConverter>();
             services.AddTransient<IFaqGetter, FaqGetter>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ICartService, CartService>();
 
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<StoreDataContext>();
             services.AddMvc();
