@@ -11,7 +11,6 @@ namespace MVC_Project.Models
 
         [HiddenInput(DisplayValue = false)]
         public long Id { get; set; }
-
         public string Title { get; set; }
 
         [Display(Name = "Short Description")]

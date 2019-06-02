@@ -39,7 +39,7 @@ namespace MVC_Project
             { options.UseSqlite("DataSource=storeData.db"); });
 
             services.AddTransient<IImageConverter, ImageConverter>();
-
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<StoreDataContext>();
             services.AddMvc();
         }
