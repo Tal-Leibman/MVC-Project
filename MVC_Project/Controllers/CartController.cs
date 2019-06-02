@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVC_Project.Data;
 using MVC_Project.Models;
+using Newtonsoft.Json;
 
 namespace MVC_Project.Controllers
 {
@@ -15,11 +16,13 @@ namespace MVC_Project.Controllers
     {
         private readonly StoreDataContext dataContext;
         private readonly SignInManager<User> signInManager;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public CartController(StoreDataContext dataContext, SignInManager<User> signInManager)
+        public CartController(StoreDataContext dataContext, SignInManager<User> signInManager, IHttpContextAccessor httpContextAccessor)
         {
             this.dataContext = dataContext;
             this.signInManager = signInManager;
+            this.httpContextAccessor = httpContextAccessor;
         }
         public IActionResult Index()
         {
@@ -36,17 +39,18 @@ namespace MVC_Project.Controllers
             }
             product.State = Product.States.Reserved;
             dataContext.SaveChanges();
-
-
-            if (User.Identity.IsAuthenticated)
+            string cartJson = Request.Cookies["Cart"];
+            Cart cart = null;
+            try
             {
-                User loggedInUser = dataContext.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-                HttpContext.Response.Cookies.Append(product.Id.ToString() , loggedInUser.Id);
+                cart = JsonConvert.DeserializeObject<Cart>(cartJson);
             }
-            else
+            catch
             {
-                HttpContext.Response.Cookies.Append(product.Id.ToString(), "Anon");
+                cart = new Cart();
             }
+            cart.ProductIds.Add(product.Id);
+            Response.Cookies.Append("Cart", JsonConvert.SerializeObject(cart));
             return RedirectToAction("Index");
         }
     }

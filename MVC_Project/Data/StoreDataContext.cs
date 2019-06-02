@@ -19,8 +19,6 @@ namespace MVC_Project.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>().Ignore(user => user.Cart);
-
             modelBuilder.Entity<Product>()
             .HasOne(product => product.Seller)
             .WithMany(seller => seller.ProductsSold)

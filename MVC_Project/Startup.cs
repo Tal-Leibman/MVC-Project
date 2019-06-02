@@ -29,18 +29,12 @@ namespace MVC_Project
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
 
             services.AddDbContext<StoreDataContext>(options =>
             { options.UseSqlite("DataSource=storeData.db"); });
 
             services.AddTransient<IImageConverter, ImageConverter>();
             services.AddTransient<IFaqGetter, FaqGetter>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<StoreDataContext>();
             services.AddMvc();
         }
@@ -65,8 +59,6 @@ namespace MVC_Project
 
         private void SeedDataBase(StoreDataContext context, IHostingEnvironment env)
         {
-
-
             var test_user_1 = new User()
             {
                 Id = Guid.NewGuid().ToString(),
