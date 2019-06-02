@@ -15,6 +15,5 @@ namespace MVC_Project.Models
         public DateTime BirthDate { get; set; }
         public List<Product> ProductsSold { get; set; }
         public List<Product> ProductsBought { get; set; }
-        public Cart Cart { get; set; }
     }
 }
