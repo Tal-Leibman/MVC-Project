@@ -36,7 +36,24 @@ namespace MVC_Project.Services
         {
             _httpContext.HttpContext.Response.Cookies.Delete(_cartCookieKey);
         }
-        public bool RemoveProduct(int id) => throw new NotImplementedException();
+        public bool RemoveProduct(int id)
+        {
+            Product product = _dataContext.Products.Find(id);
+            if (product == null)
+            {
+                return false;
+            }
+            Cart cart = ParseCookie();
+            if (cart.ProductIds.Remove(id))
+            {
+                product.LastInteraction = DateTime.Now;
+                product.State = product.State == Product.States.Reserved ? Product.States.Available : product.State;
+                _dataContext.SaveChanges();
+                SaveCookie(cart);
+                return true;
+            }
+            return false;
+        }
 
         private void SaveCookie(Cart cart)
         {
