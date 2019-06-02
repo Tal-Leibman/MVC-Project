@@ -1,28 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVC_Project.Data;
 using MVC_Project.Models;
+using System.Threading.Tasks;
 
 namespace MVC_Project.Controllers
 {
     public class RegisterController : Controller
     {
-        private StoreDataContext dataContext;
-        private UserManager<User> userManager;
+        private StoreDataContext _dataContext;
+        private UserManager<User> _userManager;
+
         public RegisterController(StoreDataContext dataContext, UserManager<User> userManager)
         {
-            this.dataContext = dataContext;
-            this.userManager = userManager;
+            _dataContext = dataContext;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
-        {
-            return View();
-        }
+        { return View(); }
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterUser registerUser)
@@ -35,11 +31,12 @@ namespace MVC_Project.Controllers
                 LastName = registerUser.LastName,
                 BirthDate = registerUser.BirthDate,
             };
-            IdentityResult res = await userManager.CreateAsync(newUser, registerUser.Password);
+
+            IdentityResult res = await _userManager.CreateAsync(newUser, registerUser.Password);
+
             if (res == IdentityResult.Success)
-            {
-                return RedirectToAction("Index", "Account");
-            }
+                return RedirectToAction("Index", "Login");
+
             return RedirectToAction("Error", "Home");
         }
     }

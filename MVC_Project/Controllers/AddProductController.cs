@@ -14,10 +14,11 @@ namespace MVC_Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index([FromBody]Product product)
+        public IActionResult Index(Product product)
         {
-
-            return View();
+            _dataContext.Products.Add(product);
+            _dataContext.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }

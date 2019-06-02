@@ -1,0 +1,33 @@
+﻿@model Product
+@{ ViewData["Title"] = "AddProduct";}
+
+<h2>Register</h2>
+<form asp-controller="Register" asp-action="Register" method="post">
+	<div>
+		<label asp-for="Title"></label>
+		<input asp-for="Title" />
+	</div>
+	<div>
+		<label asp-for="ShortDescription"></label>
+		<input asp-for="ShortDescription" />
+	</div>
+	<div>
+		<label asp-for="LongDescription"></label>
+		<input asp-for="LongDescription" />
+	</div>
+	<div>
+		<label asp-for="Date"></label>
+		<input asp-for="Date" />
+	</div>
+	<div>
+		<label asp-for="Price"></label>
+		<input asp-for="Price" />
+	</div>
+	<div>
+		<label asp-for="Images"></label>
+		<input asp-for="Images" />
+	</div>
+
+	<div asp-validation-summary="All"></div>
+	<input type="submit" value="Register" />
+</form>

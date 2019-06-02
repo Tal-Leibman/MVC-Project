@@ -34,6 +34,8 @@ paths.vendorCssDest = paths.webroot + "vendor-styles/"
 gulp.task("compile-sass", () => {
 	return gulp.src(paths.sass)
 		.pipe(sass().on('error', sass.logError))
+		.pipe(concat("styles.css"))
+		.pipe(cssMini())
 		.pipe(gulp.dest(paths.compiledCss))
 })
 
@@ -53,8 +55,9 @@ gulp.task("load-vendor-styles", () => {
 		.pipe(gulp.dest(paths.vendorCssDest))
 })
 
+// Watch the file, and compile when it undergoes modifications
 gulp.task("sass-watch", () => {
-	gulp.watch(path.sass, gulp.series("compile-sass"))
+	gulp.watch(paths.sass, gulp.series("compile-sass"))
 })
 
 // Run all the tasks

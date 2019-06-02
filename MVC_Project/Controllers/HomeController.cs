@@ -1,51 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using MVC_Project.Data;
 using MVC_Project.Models;
+using System;
+using System.Diagnostics;
+using System.Linq;
 
 namespace MVC_Project.Controllers
 {
     public class HomeController : Controller
     {
-        private StoreDataContext dataContext;
-        private TimeSpan resrevedTimeOut;
+        StoreDataContext _dataContext;
+        TimeSpan _resrevedTimeOut;
 
-        public HomeController(StoreDataContext dataContext)
+        public HomeController(StoreDataContext dataContext, IConfiguration config)
         {
-            this.dataContext = dataContext;
-            resrevedTimeOut = new TimeSpan(0, 0, 2);
+            _dataContext = dataContext;
+            _resrevedTimeOut = new TimeSpan(0, 0, config.GetValue<int>("ProductReservedTimeout"));
         }
 
         public IActionResult Index()
         {
             ViewBag.User = User?.Identity?.Name;
 
-            dataContext.CheckReservedProducts(resrevedTimeOut);
-            dataContext.SaveChanges();
-            return View(dataContext.Products.Where(p => p.State == Product.States.Available).ToList());
+            _dataContext.CheckReservedProducts(_resrevedTimeOut);
+            _dataContext.SaveChanges();
+            return View(_dataContext.Products.Where(p => p.State == Product.States.Available).ToList());
         }
 
         public IActionResult ProductDetails(long id)
         {
-            Product product = dataContext.Products.Find(id);
+            Product product = _dataContext.Products.Find(id);
             return product != null ? View(product) : (IActionResult)RedirectToAction("Error");
-        }
-
-        public IActionResult AddProduct()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult AddProduct(Product product)
-        {
-            dataContext.Products.Add(product);
-            dataContext.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

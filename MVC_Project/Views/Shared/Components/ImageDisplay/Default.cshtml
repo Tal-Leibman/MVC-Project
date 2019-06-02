@@ -1,0 +1,14 @@
+﻿@model Image
+@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment hosting
+
+@{
+	if (Model != null)
+	{
+		string base64 = Convert.ToBase64String(Model.ByteArray);
+		<img class="card-img-top" src=@String.Format("data:image/jpg;base64,{0}", base64) />
+	}
+	else
+	{
+		<img class="card-img" src="~/images/no_image.png" alt="no-image">
+	}
+}

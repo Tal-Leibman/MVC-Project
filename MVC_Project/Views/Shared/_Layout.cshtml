@@ -18,13 +18,12 @@
 		{
 			<a asp-controller="Account" asp-action="Index" class="navbar-brand">Add Product</a>
 			<a asp-controller="Register" asp-action="Index" class="navbar-brand">Register</a>
-			<a asp-controller="Account" asp-action="Index" class="navbar-brand">Log In</a>
+			<a asp-controller="Login" asp-action="Index" class="navbar-brand">Log In</a>
 		}
 		else
 		{
 			<a asp-controller="AddProduct" asp-action="Index" class="navbar-brand">Add Product</a>
-			<a asp-controller="Account" asp-action="Index" class="navbar-brand">@ViewBag.User</a>
-			<a asp-controller="Account" asp-action="Index" class="navbar-brand">Log Out</a>
+			<a asp-controller="Login" asp-action="LogOut" class="navbar-brand">Log Out</a>
 		}
 
 	</nav>
