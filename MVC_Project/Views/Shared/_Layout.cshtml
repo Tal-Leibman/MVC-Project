@@ -13,17 +13,17 @@
 		<a asp-controller="Home" asp-action="Index" class="navbar-brand">Home</a>
 		<a asp-controller="Info" asp-action="About" class="navbar-brand">About</a>
 		<a asp-controller="Info" asp-action="Faq" class="navbar-brand">FAQ</a>
+		<a asp-controller="AddProduct" asp-action="Index" class="navbar-brand">Add Product</a>
 
-		@if (ViewBag.User == null)
+		@if (User.Identity.IsAuthenticated)
 		{
-			<a asp-controller="Account" asp-action="Index" class="navbar-brand">Add Product</a>
-			<a asp-controller="Register" asp-action="Index" class="navbar-brand">Register</a>
-			<a asp-controller="Login" asp-action="Index" class="navbar-brand">Log In</a>
+			<a asp-controller="Login" asp-action="LogOut" class="navbar-brand">Log Out</a>
+			<span class="navbar-brand">Logged in as: @User.Identity.Name</span>
 		}
 		else
 		{
-			<a asp-controller="AddProduct" asp-action="Index" class="navbar-brand">Add Product</a>
-			<a asp-controller="Login" asp-action="LogOut" class="navbar-brand">Log Out</a>
+			<a asp-controller="Register" asp-action="Index" class="navbar-brand">Register</a>
+			<a asp-controller="Login" asp-action="Index" class="navbar-brand">Log In</a>
 		}
 
 	</nav>
