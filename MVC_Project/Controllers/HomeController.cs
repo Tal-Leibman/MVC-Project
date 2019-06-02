@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MVC_Project.Data;
 using MVC_Project.Models;
 using System;
@@ -23,9 +28,16 @@ namespace MVC_Project.Controllers
         {
             ViewBag.User = User?.Identity?.Name;
 
-            _dataContext.CheckReservedProducts(_resrevedTimeOut);
-            _dataContext.SaveChanges();
-            return View(_dataContext.Products.Where(p => p.State == Product.States.Available).ToList());
+            dataContext.CheckReservedProducts(resrevedTimeOut);
+            dataContext.SaveChanges();
+            return View(
+                dataContext
+                .Products
+                .Include(p=> p.Seller)
+                .Include(p=> p.Images)
+                .Where(p => p.State == Product.States.Available)
+                .ToList()
+                );
         }
 
         public IActionResult ProductDetails(long id)

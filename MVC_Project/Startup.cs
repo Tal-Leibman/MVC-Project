@@ -35,6 +35,8 @@ namespace MVC_Project
 
             services.AddTransient<IImageConverter, ImageConverter>();
             services.AddTransient<IFaqGetter, FaqGetter>();
+            services.AddTransient<IUserRepository, UserRepository>();
+
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<StoreDataContext>();
             services.AddMvc();
         }
@@ -46,7 +48,6 @@ namespace MVC_Project
 
             dataContext.Database.EnsureDeleted();
             dataContext.Database.EnsureCreated();
-
             SeedDataBase(dataContext, env);
 
             app.UseHttpsRedirection();
