@@ -1,35 +1,29 @@
 ﻿@model Product
 
 <a asp-controller="Home" asp-action="ProductDetails" asp-route-id=@Model.Id>
-	<span class="post-container-mini">
-		@{
-			@*if (Model.ProductImages != null && Model.ProductImages.Count > 0)
-				{
-					for (int i = 0; i < Model.ProductImages.Count; i++)
-					{
-						string base64 = Convert.ToBase64String(Model.ProductImages[i].ByteArray);
-						<img src=@String.Format("data:image/gif;base64,{0}", base64) />
-					}
-				}*@
+    <span class="post-container-mini">
+        @{
+            if (Model.Images?.Count > 0)
+            {
+                foreach (var image in Model.Images)
+                {
+                    string base64 = Convert.ToBase64String(image.ByteArray);
+                    <img src=@String.Format("data:image/jpg;base64,{0}", base64) />
+                }
+            }
+        }
 
-			if (Model.ProductImage != null)
-			{
-				string base64 = Convert.ToBase64String(Model.ProductImage.ByteArray);
-				<img src=@String.Format("data:image/gif;base64,{0}", base64) />
-			}
-		}
-
-		<span class="title-container">
-			@Model.Title
-		</span>
-		<span class="DetailsContainer">
-			Posted by @Model.SellerId at @Model.Date
-		</span>
-		<span class="price-container">
-			@Model.Price
-		</span>
-		<span class="short-description-container">
-			@Model.ShortDescription
-		</span>
-	</span>
+        <span class="title-container">
+            @Model.Title
+        </span>
+        <span class="DetailsContainer">
+            Posted by @Model.SellerId at @Model.Date
+        </span>
+        <span class="price-container">
+            @Model.Price
+        </span>
+        <span class="short-description-container">
+            @Model.ShortDescription
+        </span>
+    </span>
 </a>

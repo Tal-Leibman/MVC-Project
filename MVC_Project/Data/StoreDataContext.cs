@@ -10,7 +10,7 @@ namespace MVC_Project.Data
     public class StoreDataContext : IdentityDbContext<User>
     {
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<Image> ProductImages { get; set; }
 
         public StoreDataContext(DbContextOptions<StoreDataContext> options) : base(options)
         {
@@ -29,15 +29,9 @@ namespace MVC_Project.Data
             .WithMany(buyer => buyer.ProductsBought)
             .HasForeignKey(product => product.BuyerId);
 
-            //modelBuilder.Entity<ProductImage>()
-            //.HasOne(image => image.Product)
-            //.WithOne(product => product.ProductImage)
-            //.HasForeignKey(image => image.ProductId);
-
-            modelBuilder.Entity<Product>()
-                .HasOne(p => p.ProductImage)
-                .WithOne(i => i.Product)
-                .HasForeignKey<ProductImage>(i => i.ProductId);
+            modelBuilder.Entity<Image>()
+                .HasOne(image => image.Product)
+                .WithMany(product => product.Images);
         }
 
         public void CheckReservedProducts(TimeSpan timeout)

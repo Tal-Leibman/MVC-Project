@@ -51,6 +51,7 @@ namespace MVC_Project
 
             dataContext.Database.EnsureDeleted();
             dataContext.Database.EnsureCreated();
+
             SeedDataBase(dataContext, env);
 
             app.UseHttpsRedirection();
@@ -63,14 +64,7 @@ namespace MVC_Project
 
         private void SeedDataBase(StoreDataContext context, IHostingEnvironment env)
         {
-            var test_image = new ProductImage()
-            {
-                ByteArray = File.ReadAllBytes($"{env.ContentRootPath}\\wwwroot\\images\\test_image_1.jpg"),
-                ProductId = 2,
-                Id = 1,
-                FileName = "test_image_1.jpg",
-            };
-            context.ProductImages.Add(test_image);
+
 
             var test_user_1 = new User()
             {
@@ -126,8 +120,7 @@ namespace MVC_Project
                 BuyerId = test_user_2.Id,
                 Price = 420.69,
                 State = Product.States.Available,
-                Title = "A pile of shit",
-                ProductImageId = 1
+                Title = "A pile of shit"
             };
             var test_prod_3 = new Product()
             {
@@ -141,10 +134,17 @@ namespace MVC_Project
                 State = Product.States.Available,
                 Title = "A bent spoon",
             };
+            var test_image = new Image()
+            {
+                ByteArray = File.ReadAllBytes($"{env.ContentRootPath}\\wwwroot\\images\\test_image_1.jpg"),
+                Id = 1,
+                FileName = "test_image_1.jpg",
+                Product = test_prod_2
+            };
             context.Products.Add(test_prod_1);
             context.Products.Add(test_prod_2);
             context.Products.Add(test_prod_3);
-
+            context.ProductImages.Add(test_image);
             context.SaveChanges();
         }
     }

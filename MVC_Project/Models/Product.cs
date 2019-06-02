@@ -28,9 +28,7 @@ namespace MVC_Project.Models
         [DataType(DataType.Currency)]
         public double Price { get; set; }
 
-        public virtual long ProductImageId { get; set; }
-
-        public virtual ProductImage ProductImage { get; set; }
+        public ICollection<Image> Images { get; set; }
 
         [HiddenInput(DisplayValue = false)]
         public States State { get; set; }
@@ -41,8 +39,8 @@ namespace MVC_Project.Models
         [HiddenInput(DisplayValue = false)]
         public string BuyerId { get; set; }
 
-        public virtual User Seller { get; set; }
+        public User Seller { get; set; }
 
-        public virtual User Buyer { get; set; }
+        public User Buyer { get; set; }
     }
 }
