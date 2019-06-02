@@ -22,6 +22,8 @@ namespace MVC_Project.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.User = User?.Identity?.Name;
+
             dataContext.CheckReservedProducts(resrevedTimeOut);
             dataContext.SaveChanges();
             return View(dataContext.Products.Where(p => p.State == Product.States.Available).ToList());

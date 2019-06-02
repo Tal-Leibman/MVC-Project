@@ -1,36 +1,28 @@
 ﻿
-@{
-	ViewData["Title"] = "ProductDetails";
-}
-
+@{ ViewData["Title"] = "ProductDetails"; }
 @model Product
 
-<span class="product-details-container">
-	@*@{
-			string[] imageSources = new string[Model.Images.Length];
-			for (int i = 0; i < Model.Images.Length; i++)
+<div class="product-details-container">
+	<div class="card-body bg-light text-center">
+		<h5 class="card-header">@Model.Title</h5>
+		@{
+			if (Model.Images?.Count > 0)
 			{
-				string base64 = Convert.ToBase64String(Model.Images[i]);
-				imageSources[i] = String.Format("data:image/gif;base64,{0}", base64);
+				string base64 = Convert.ToBase64String(Model.Images.ElementAt(0).ByteArray);
+				<img src=@String.Format("data:image/jpg;base64,{0}", base64) />
+			}
+			else
+			{
+				<img src="..." class="card-img-top" alt="no-image">
 			}
 		}
-
-		<span class="image-container">
-			@foreach (string source in imageSources)
-			{
-				<img src="@source" />
-			}
-		</span>*@
-	<span class="title-container">
-		@Model.Title
-	</span>
-	<span class="DetailsContainer">
-		Posted by @Model.SellerId at @Model.Date
-	</span>
-	<span class="price-container">
-		@Model.Price
-	</span>
-	<span class="long-description-container">
-		@Model.LongDescription
-	</span>
-</span>
+		<p class="card-text">@Model.LongDescription</p>
+		<div class="card-footer text-muted">
+			Price: @Model.Price
+		</div>
+		<div class="card-footer text-muted">
+			Added by @Model.SellerId@*.UserName*@ at @Model.Date.ToString("MMMM dd yyyy")
+		</div>
+	</div>
+	<input type="submit" class="btn btn-primary btn-lg btn-block" value="Add to cart" />
+</div>
