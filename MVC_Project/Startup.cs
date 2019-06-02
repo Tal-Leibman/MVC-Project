@@ -35,6 +35,8 @@ namespace MVC_Project
 
             services.AddTransient<IImageConverter, ImageConverter>();
             services.AddTransient<IFaqGetter, FaqGetter>();
+            services.AddTransient<IUserRepository, UserRepository>();
+
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<StoreDataContext>();
             services.AddMvc();
         }

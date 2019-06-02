@@ -1,6 +1,8 @@
 ﻿
 @{ ViewData["Title"] = "ProductDetails"; }
 @model Product
+@inject IUserRepository userRepo
+
 
 <div class="product-details-container">
     <div class="card-body bg-light text-center">
@@ -21,7 +23,7 @@
             Price: @Model.Price
         </div>
         <div class="card-footer text-muted">
-            Added by @Model.SellerId@*.UserName*@ at @Model.Date.ToString("MMMM dd yyyy")
+            Added by: @userRepo.GetUser(Model.SellerId) Posted Date: @Model.Date.ToString("MMMM dd yyyy")
         </div>
     </div>
     <a value="Add To Cart" class="btn btn-primary btn-lg btn-block" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id">Add to cart...</a>
