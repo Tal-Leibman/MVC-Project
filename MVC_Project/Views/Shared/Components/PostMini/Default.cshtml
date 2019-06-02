@@ -1,5 +1,4 @@
 ﻿@model Product
-@inject IUserRepository userRepo
 
 <a asp-controller="Home" asp-action="ProductDetails" asp-route-id=@Model.Id>
     <div class="card post-container-mini">
@@ -21,7 +20,7 @@
                 Price: @Model.Price.ToString("C")
             </div>
             <div class="card-footer text-muted">
-                Added by: @userRepo.GetUser(Model.SellerId) Posted Date: @Model.Date.ToString("MMMM dd yyyy")
+                Added by: @Model.Seller.UserName Posted Date: @Model.Date.ToString("MMMM dd yyyy")
             </div>
         </div>
     </div>

@@ -48,7 +48,6 @@ namespace MVC_Project
 
             dataContext.Database.EnsureDeleted();
             dataContext.Database.EnsureCreated();
-
             SeedDataBase(dataContext, env);
 
             app.UseHttpsRedirection();

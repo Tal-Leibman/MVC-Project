@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MVC_Project.Data;
 using MVC_Project.Models;
 
@@ -26,7 +27,14 @@ namespace MVC_Project.Controllers
 
             dataContext.CheckReservedProducts(resrevedTimeOut);
             dataContext.SaveChanges();
-            return View(dataContext.Products.Where(p => p.State == Product.States.Available).ToList());
+            return View(
+                dataContext
+                .Products
+                .Include(p=> p.Seller)
+                .Include(p=> p.Images)
+                .Where(p => p.State == Product.States.Available)
+                .ToList()
+                );
         }
 
         public IActionResult ProductDetails(long id)
