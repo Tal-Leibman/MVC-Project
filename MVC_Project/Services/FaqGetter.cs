@@ -11,8 +11,7 @@ namespace MVC_Project.Services
     {
         IHostingEnvironment _host;
 
-        public FaqGetter(IHostingEnvironment hostEnv)
-        { _host = hostEnv; }
+        public FaqGetter(IHostingEnvironment hostEnv) => _host = hostEnv;
 
         public string[][] GetFaq()
         {

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using MVC_Project.Data;
 using MVC_Project.Models;
 using Newtonsoft.Json;
+using System;
 
 namespace MVC_Project.Services
 {
@@ -13,16 +10,18 @@ namespace MVC_Project.Services
     {
         private readonly StoreDataContext _dataContext;
         private readonly IHttpContextAccessor _httpContext;
+        private readonly string _cartCookieKey;
 
         public CartService(StoreDataContext dataContext, IHttpContextAccessor httpContext)
         {
             _dataContext = dataContext;
             _httpContext = httpContext;
+            _cartCookieKey = "Cart";
         }
 
         public bool AddToCart(long id)
         {
-            var product = _dataContext.Products.Find(id);
+            Product product = _dataContext.Products.Find(id);
             if (product?.State != Product.States.Available)
                 return false;
             Cart cart = ParseCookie();
@@ -33,17 +32,37 @@ namespace MVC_Project.Services
             SaveCookie(cart);
             return true;
         }
-        public void ClearAllProducts() => throw new NotImplementedException();
-        public bool RemoveProduct(int id) => throw new NotImplementedException();
+        public void ClearAllProducts()
+        {
+            _httpContext.HttpContext.Response.Cookies.Delete(_cartCookieKey);
+        }
+        public bool RemoveProduct(int id)
+        {
+            Product product = _dataContext.Products.Find(id);
+            if (product == null)
+            {
+                return false;
+            }
+            Cart cart = ParseCookie();
+            if (cart.ProductIds.Remove(id))
+            {
+                product.LastInteraction = DateTime.Now;
+                product.State = product.State == Product.States.Reserved ? Product.States.Available : product.State;
+                _dataContext.SaveChanges();
+                SaveCookie(cart);
+                return true;
+            }
+            return false;
+        }
 
         private void SaveCookie(Cart cart)
-        {   
-            _httpContext.HttpContext.Response.Cookies.Append("Cart", JsonConvert.SerializeObject(cart));
+        {
+            _httpContext.HttpContext.Response.Cookies.Append(_cartCookieKey, JsonConvert.SerializeObject(cart));
         }
 
         private Cart ParseCookie()
         {
-            var cartJson = _httpContext.HttpContext.Request.Cookies["Cart"];
+            string cartJson = _httpContext.HttpContext.Request.Cookies[_cartCookieKey];
             Cart cart = null;
             try
             {
@@ -55,5 +74,7 @@ namespace MVC_Project.Services
             }
             return cart;
         }
+
+        public Cart GetCart() => ParseCookie();
     }
 }

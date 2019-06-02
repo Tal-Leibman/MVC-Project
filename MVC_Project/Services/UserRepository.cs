@@ -16,8 +16,7 @@ namespace MVC_Project.Services
     {
         StoreDataContext _context;
 
-        public UserRepository(StoreDataContext ctx)
-        { _context = ctx; }
+        public UserRepository(StoreDataContext ctx) => _context = ctx;
 
         public List<User> GetUserList() => _context.Users.ToList();
         public User GetUser(string id) => _context.Users.FirstOrDefault(u => u.Id == id);
@@ -27,7 +26,7 @@ namespace MVC_Project.Services
             if (!ValidateRegisterUser(newUser))
                 return false;
 
-            User user = new User
+            var user = new User
             {
                 UserName = newUser.UserName,
                 Email = newUser.Email,
@@ -41,15 +40,13 @@ namespace MVC_Project.Services
 
         bool ValidateRegisterUser(RegisterUser newUser)
         {
-            if (newUser == null
-                || string.IsNullOrEmpty(newUser.UserName)
-                || string.IsNullOrEmpty(newUser.Password)
-                || string.IsNullOrEmpty(newUser.Email)
-                || string.IsNullOrEmpty(newUser.FirstName)
-                || string.IsNullOrEmpty(newUser.LastName)
-                || newUser.BirthDate == null)
-                return false;
-            return true;
+            return newUser != null
+                && !string.IsNullOrEmpty(newUser.UserName)
+                && !string.IsNullOrEmpty(newUser.Password)
+                && !string.IsNullOrEmpty(newUser.Email)
+                && !string.IsNullOrEmpty(newUser.FirstName)
+                && !string.IsNullOrEmpty(newUser.LastName)
+                && newUser.BirthDate != null;
         }
     }
 }

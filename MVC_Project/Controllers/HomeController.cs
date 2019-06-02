@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MVC_Project.Data;
 using MVC_Project.Models;
-using Microsoft.Extensions.Configuration;
+using System;
+using System.Diagnostics;
+using System.Linq;
 
 namespace MVC_Project.Controllers
 {
     public class HomeController : Controller
     {
-        StoreDataContext _dataContext;
-        TimeSpan _resrevedTimeOut;
+        private StoreDataContext _dataContext;
+        private TimeSpan _resrevedTimeOut;
 
         public HomeController(StoreDataContext dataContext, IConfiguration config)
         {

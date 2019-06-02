@@ -21,10 +21,9 @@ namespace MVC_Project.Services
 
     public class ProductRepository : IProductRepository
     {
-        StoreDataContext _context;
+        private StoreDataContext _context;
 
-        public ProductRepository(StoreDataContext ctx)
-        { _context = ctx; }
+        public ProductRepository(StoreDataContext ctx) => _context = ctx;
 
         public List<Product> GetProductList() => _context.Products.ToList();
         public Product GetProduct(long id) => _context.Products.FirstOrDefault(p => p.Id == id);
@@ -42,13 +41,11 @@ namespace MVC_Project.Services
 
         bool ValidateProduct(Product product)
         {
-            if (product == null
-                || string.IsNullOrEmpty(product.Title)
-                || string.IsNullOrEmpty(product.ShortDescription)
-                || string.IsNullOrEmpty(product.LongDescription)
-                || product.Price <= 0)
-                return false;
-            return true;
+            return product != null
+                && !string.IsNullOrEmpty(product.Title)
+                && !string.IsNullOrEmpty(product.ShortDescription)
+                && !string.IsNullOrEmpty(product.LongDescription)
+                && product.Price > 0;
         }
     }
 }
