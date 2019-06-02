@@ -7,9 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVC_Project.Data;
 using MVC_Project.Models;
-using System;
-using System.Diagnostics;
-using System.Linq;
+using Microsoft.Extensions.Configuration;
 
 namespace MVC_Project.Controllers
 {
@@ -28,10 +26,10 @@ namespace MVC_Project.Controllers
         {
             ViewBag.User = User?.Identity?.Name;
 
-            dataContext.CheckReservedProducts(resrevedTimeOut);
-            dataContext.SaveChanges();
+            _dataContext.CheckReservedProducts(_resrevedTimeOut);
+            _dataContext.SaveChanges();
             return View(
-                dataContext
+                _dataContext
                 .Products
                 .Include(p=> p.Seller)
                 .Include(p=> p.Images)
