@@ -3,6 +3,10 @@ $header-button-width: 120px;
 $header-button-font-size: 20px;
 $body-container-top-border: 2px;
 
+body {
+	background-color: ghostwhite;
+}
+
 .proj-header {
 	width: 100%;
 	left: 0px;
@@ -30,7 +34,6 @@ $body-container-top-border: 2px;
 .proj-body-container {
 	margin-top: $header-height;
 	border-top: 2px solid black;
-	background-color: red;
 	width: 100%;
 }
 
