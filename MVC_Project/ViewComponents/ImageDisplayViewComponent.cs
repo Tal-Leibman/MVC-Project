@@ -6,6 +6,6 @@ namespace MVC_Project.ViewComponents
 {
     public class ImageDisplayViewcomponent : ViewComponent
     {
-        public Task<IViewComponentResult> InvokeAsync(Product product) => Task.FromResult<IViewComponentResult>(View("Default", product));
+        public Task<IViewComponentResult> InvokeAsync(Image product) => Task.FromResult<IViewComponentResult>(View("Default", product));
     }
 }

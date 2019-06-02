@@ -1,30 +1,29 @@
-﻿
-@{ ViewData["Title"] = "ProductDetails"; }
+﻿@{ ViewData["Title"] = "ProductDetails"; }
 @model Product
 @inject IUserRepository userRepo
 
-
 <div class="product-details-container">
-    <div class="card-body bg-light text-center">
-        <h5 class="card-header">@Model.Title</h5>
-        @{
-            if (Model.Images?.Count > 0)
-            {
-                string base64 = Convert.ToBase64String(Model.Images.ElementAt(0).ByteArray);
-                <img src=@String.Format("data:image/jpg;base64,{0}", base64) />
-            }
-            else
-            {
-                <img src="..." class="card-img-top" alt="no-image">
-            }
-        }
-        <p class="card-text">@Model.LongDescription</p>
-        <div class="card-footer text-muted">
-            Price: @Model.Price
-        </div>
-        <div class="card-footer text-muted">
-            Added by: @userRepo.GetUser(Model.SellerId) Posted Date: @Model.Date.ToString("MMMM dd yyyy")
-        </div>
-    </div>
-    <a value="Add To Cart" class="btn btn-primary btn-lg btn-block" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id">Add to cart...</a>
+	<div class="card-body bg-light text-center">
+		<h5 class="card-header">@Model.Title</h5>
+
+		@if (Model.Images != null && Model.Images.Count > 0)
+		{
+			@await Component.InvokeAsync("ImageDisplay", Model.Images.ElementAt(0))
+		}
+		else
+		{
+			@await Component.InvokeAsync("ImageDisplay", null)
+		}
+
+		<p class="card-text">@Model.LongDescription</p>
+
+		<div class="card-footer text-muted">
+			Price: @Model.Price
+		</div>
+
+		<div class="card-footer text-muted">
+			Added by: @userRepo.GetUser(Model.SellerId) Posted Date: @Model.Date.ToString("MMMM dd yyyy")
+		</div>
+	</div>
+	<a value="Add To Cart" class="btn btn-primary btn-lg btn-block" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id">Add to cart...</a>
 </div>
