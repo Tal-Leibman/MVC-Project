@@ -74,5 +74,7 @@ namespace MVC_Project.Services
             }
             return cart;
         }
+
+        public Cart GetCart() => ParseCookie();
     }
 }

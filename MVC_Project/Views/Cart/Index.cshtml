@@ -1,7 +1,13 @@
-﻿
+﻿@model List<Product>
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Cart</h2>
+<div class="card-columns">
+    @foreach (Product product in Model)
+    {
+        @await Component.InvokeAsync("PostMini", product)
+    }
+</div>
 
