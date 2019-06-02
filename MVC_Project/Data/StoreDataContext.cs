@@ -12,9 +12,7 @@ namespace MVC_Project.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Image> ProductImages { get; set; }
 
-        public StoreDataContext(DbContextOptions<StoreDataContext> options) : base(options)
-        {
-        }
+        public StoreDataContext(DbContextOptions<StoreDataContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

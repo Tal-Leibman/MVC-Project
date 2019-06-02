@@ -9,8 +9,7 @@ namespace MVC_Project.Controllers
     {
         private SignInManager<User> _signInManager;
 
-        public LoginController(SignInManager<User> signInManager)
-        { _signInManager = signInManager; }
+        public LoginController(SignInManager<User> signInManager) => _signInManager = signInManager;
 
         public IActionResult Index() => View();
 
@@ -18,11 +17,7 @@ namespace MVC_Project.Controllers
         public async Task<IActionResult> Index(Login login)
         {
             var res = await _signInManager.PasswordSignInAsync(login.UserName, login.Password, false, false);
-
-            if (res == Microsoft.AspNetCore.Identity.SignInResult.Success)
-                return RedirectToAction("Index", "Home");
-
-            return RedirectToAction("Index");
+            return res == Microsoft.AspNetCore.Identity.SignInResult.Success ? RedirectToAction("Index", "Home") : RedirectToAction("Index");
         }
 
         public async Task<IActionResult> LogOut()
