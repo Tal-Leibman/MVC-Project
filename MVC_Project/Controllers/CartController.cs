@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVC_Project.Data;
 using MVC_Project.Models;
+using MVC_Project.Services;
 using Newtonsoft.Json;
 
 namespace MVC_Project.Controllers
@@ -15,14 +16,12 @@ namespace MVC_Project.Controllers
     public class CartController : Controller
     {
         private readonly StoreDataContext dataContext;
-        private readonly SignInManager<User> signInManager;
-        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly ICartService cartService;
 
-        public CartController(StoreDataContext dataContext, SignInManager<User> signInManager, IHttpContextAccessor httpContextAccessor)
+        public CartController(StoreDataContext dataContext, ICartService cartService)
         {
             this.dataContext = dataContext;
-            this.signInManager = signInManager;
-            this.httpContextAccessor = httpContextAccessor;
+            this.cartService = cartService;
         }
         public IActionResult Index()
         {
@@ -30,28 +29,7 @@ namespace MVC_Project.Controllers
         }
         public IActionResult Add(long Id)
         {
-            Product product = dataContext
-                .Products
-                .FirstOrDefault(p => p.Id == Id && p.State == Product.States.Available);
-            if (product == null)
-            {
-                return RedirectToAction("Error", "Home");
-            }
-            product.State = Product.States.Reserved;
-            dataContext.SaveChanges();
-            string cartJson = Request.Cookies["Cart"];
-            Cart cart = null;
-            try
-            {
-                cart = JsonConvert.DeserializeObject<Cart>(cartJson);
-            }
-            catch
-            {
-                cart = new Cart();
-            }
-            cart.ProductIds.Add(product.Id);
-            Response.Cookies.Append("Cart", JsonConvert.SerializeObject(cart));
-            return RedirectToAction("Index");
+            return cartService.AddToCart(Id) ? RedirectToAction("Index") : RedirectToAction("Home","Error");
         }
     }
 }
