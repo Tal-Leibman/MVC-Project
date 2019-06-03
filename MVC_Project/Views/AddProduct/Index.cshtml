@@ -1,8 +1,9 @@
 ﻿@model ProductAddition
 @{ ViewData["Title"] = "AddProduct";}
+@inject MVC_Project.Services.IAllowedMimes mimeService
 
 <h2>Add Product</h2>
-<form asp-controller="AddPRoduct" asp-action="Index" method="post">
+<form asp-controller="AddPRoduct" asp-action="Index" method="post" enctype="multipart/form-data">
 	<div>
 		<label asp-for="Title"></label>
 		<input asp-for="Title" />
@@ -21,10 +22,10 @@
 	</div>
 
 	<div>
-		<label asp-for="Image"></label>
-		<input asp-for="Image" />
+		<label asp-for="Images"></label>
+		<input asp-for="Images" multiple accept=@mimeService.GetAllowed() />
 	</div>
 
-	@*<div asp-validation-summary="All"></div>*@
+	<div asp-validation-summary="All"></div>
 	<input type="submit" value="Submit" />
 </form>

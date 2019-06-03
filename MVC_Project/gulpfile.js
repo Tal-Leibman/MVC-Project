@@ -18,12 +18,12 @@ paths.compiledCss = paths.webroot + "styles/"
 paths.vendorScript = [
 	paths.nodeModules + "jquery/dist/jquery.js",
 	paths.nodeModules + "popper.js/dist/umd/popper.js",
-	paths.nodeModules + "bootstrap/dist/js/bootstrap.js"
+	paths.nodeModules + "bootstrap/dist/js/bootstrap.js",
 ]
 
 // Third party CSS files
 paths.vendorStyles = [
-	paths.nodeModules + "bootstrap/dist/css/bootstrap.css"
+	paths.nodeModules + "bootstrap/dist/css/bootstrap.css",
 ]
 
 // Third party destination files

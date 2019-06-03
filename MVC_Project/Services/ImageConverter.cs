@@ -1,25 +1,26 @@
-﻿using MVC_Project.Models;
+﻿using Microsoft.AspNetCore.Http;
+using MVC_Project.Models;
 using System.IO;
 
 namespace MVC_Project.Services
 {
     public interface IImageConverter
     {
-        bool ToImage(string path, out Image image);
+        bool ToDatabaseImage(IFormFile formFile, out Image image);
     }
 
     public class ImageConverter : IImageConverter
     {
-        public bool ToImage(string path, out Image image)
+        public bool ToDatabaseImage(IFormFile formFile, out Image image)
         {
             image = default;
-            if (!File.Exists(path))
+            if (formFile == null)
                 return false;
 
-            image = new Image
+            using (var ms = new MemoryStream())
             {
-                ByteArray = File.ReadAllBytes(path),
-                FileName = Path.GetFileName(path),
+                formFile.OpenReadStream().CopyTo(ms);
+                image = new Image { ByteArray = ms.ToArray() };
             };
 
             return true;

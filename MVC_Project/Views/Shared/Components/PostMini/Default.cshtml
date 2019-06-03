@@ -1,28 +1,34 @@
 ﻿@model Product
 
 <a asp-controller="Home" asp-action="ProductDetails" asp-route-id=@Model.Id>
-    <div class="card post-container-mini">
+	<div class="card post-container-mini">
 		<div class="card-body bg-light text-center">
 			<h5 class="card-header">@Model.Title</h5>
 
-			@if (Model.Images != null && Model.Images.Count > 0)
-			{
-				@await Component.InvokeAsync("ImageDisplay", Model.Images.ElementAt(0))
-			}
-			else
-			{
-				@await Component.InvokeAsync("ImageDisplay", null)
-			}
+			<div class="image-container">
+				@if (Model.Images != null && Model.Images.Count > 0)
+				{
+					@await Component.InvokeAsync("ImageDisplay", Model.Images.ElementAt(0))
+				}
+				else
+				{
+					@await Component.InvokeAsync("ImageDisplay", null)
+				}
+			</div>
 
-			<p class="card-text">@Model.ShortDescription</p>
+			<p class="card-text text-black-50">@Model.ShortDescription</p>
 
 			<div class="card-footer text-muted">
-				Price: @Model.Price.ToString("C")
+				Price:
+				<span class="text-highlight">@Model.Price.ToString("C")</span>
 			</div>
 
 			<div class="card-footer text-muted">
-				Added by: @Model.Seller.UserName Posted Date: @Model.Date.ToString("MMMM dd yyyy")
+				Posted on
+				<span class="text-highlight">@Model.Date.ToString("MMMM dd yyyy")</span>
+				by:
+				<span class="text-highlight">@Model.Seller.UserName</span>
 			</div>
 		</div>
-    </div>
+	</div>
 </a>

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MVC_Project.Data;
 using MVC_Project.Models;
 using MVC_Project.Services;
@@ -7,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MVC_Project.Controllers
 {
@@ -15,11 +13,13 @@ namespace MVC_Project.Controllers
     {
         StoreDataContext _dataContext;
         IUserRepository _userRepository;
+        IImageConverter _imageConverter;
 
-        public AddProductController(StoreDataContext dataContext, IUserRepository userRepository)
+        public AddProductController(StoreDataContext dataContext, IUserRepository userRepository, IImageConverter imageConverter)
         {
             _dataContext = dataContext;
             _userRepository = userRepository;
+            _imageConverter = imageConverter;
         }
 
         public IActionResult Index()
@@ -36,16 +36,8 @@ namespace MVC_Project.Controllers
             if (!ValidateProduct(product))
                 return View();
 
-            byte[] image;
-            using (var ms = new MemoryStream())
-            {
-                product.Image.OpenReadStream().CopyTo(ms);
-                image = ms.ToArray();
-            };
-
             Product newProduct = new Product
             {
-                Id = 1,
                 Title = product.Title,
                 ShortDescription = product.ShortDescription,
                 LongDescription = product.LongDescription,
@@ -59,6 +51,28 @@ namespace MVC_Project.Controllers
                 Seller = _userRepository.GetUserList().FirstOrDefault(u => u.UserName.Equals(User.Identity.Name)),
                 Buyer = null
             };
+
+            if (product.Images == null || product.Images.Count < 1)
+            {
+                newProduct.Images = null;
+            }
+            else
+            {
+                List<Image> imageList = new List<Image>();
+                foreach (var formFile in product.Images)
+                {
+                    Image generated;
+                    bool success = _imageConverter.ToDatabaseImage(formFile, out generated);
+
+                    if (success)
+                    {
+                        generated.Product = newProduct;
+                        imageList.Add(generated);
+                    }
+                }
+
+                newProduct.Images = imageList;
+            }
 
             _dataContext.Products.Add(newProduct);
             _dataContext.SaveChanges();

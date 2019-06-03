@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace MVC_Project.ViewComponents
 {
-    public class ImageDisplayViewcomponent : ViewComponent
+    public class ImageDisplayViewComponent : ViewComponent
     {
-        public Task<IViewComponentResult> InvokeAsync(Image product) => Task.FromResult<IViewComponentResult>(View("Default", product));
+        public Task<IViewComponentResult> InvokeAsync(Image image) => Task.FromResult<IViewComponentResult>(View("Default", image));
     }
 }
