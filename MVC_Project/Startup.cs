@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MVC_Project.Data;
-using Microsoft.EntityFrameworkCore;
-using MVC_Project.Models;
-using System.IO;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Hosting;
-using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using MVC_Project.Data;
+using MVC_Project.Models;
 using MVC_Project.Services;
+using System;
+using System.IO;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace MVC_Project
 {
@@ -28,7 +22,6 @@ namespace MVC_Project
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<StoreDataContext>(options =>
             { options.UseSqlite("DataSource=storeData.db"); });
 
@@ -36,6 +29,7 @@ namespace MVC_Project
             services.AddTransient<IFaqGetter, FaqGetter>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<ICartService, CartService>();
+            services.AddTransient<IAllowedMimes, AllowedMimes>();
 
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<StoreDataContext>();
             services.AddMvc();
@@ -45,6 +39,8 @@ namespace MVC_Project
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
+            else
+                app.UseExceptionHandler("/error");
 
             dataContext.Database.EnsureDeleted();
             dataContext.Database.EnsureCreated();
@@ -87,6 +83,7 @@ namespace MVC_Project
                 Email = "bigMistake@gmail.com",
                 UserName = "garden122",
             };
+
             context.Users.Add(test_user_1);
             context.Users.Add(test_user_2);
             context.Users.Add(test_user_3);
@@ -128,17 +125,20 @@ namespace MVC_Project
                 State = Product.States.Available,
                 Title = "A bent spoon",
             };
+
             var test_image = new Image()
             {
                 ByteArray = File.ReadAllBytes($"{env.ContentRootPath}\\wwwroot\\images\\test_image_1.jpg"),
                 Id = 1,
-                FileName = "test_image_1.jpg",
                 Product = test_prod_2
             };
+
             context.Products.Add(test_prod_1);
             context.Products.Add(test_prod_2);
             context.Products.Add(test_prod_3);
+
             context.ProductImages.Add(test_image);
+
             context.SaveChanges();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.IO;
 
@@ -10,12 +11,18 @@ namespace MVC_Project.Services
     public class FaqGetter : IFaqGetter
     {
         IHostingEnvironment _host;
+        IConfiguration _config;
 
-        public FaqGetter(IHostingEnvironment hostEnv) => _host = hostEnv;
+        public FaqGetter(IHostingEnvironment hostEnv, IConfiguration config)
+        {
+            _host = hostEnv;
+            _config = config;
+        }
 
         public string[][] GetFaq()
         {
-            string path = $"{_host.ContentRootPath}\\wwwroot\\faq.json";
+            //config.GetValue<int>("ProductReservedTimeout")
+            string path = $"{_host.ContentRootPath}{_config.GetValue<string>("FaqFilePathFromRoot")}";
             return JsonConvert.DeserializeObject<string[][]>(File.ReadAllText(path));
         }
     }
