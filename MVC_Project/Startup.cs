@@ -42,9 +42,9 @@ namespace MVC_Project
             else
                 app.UseExceptionHandler("/error");
 
-            dataContext.Database.EnsureDeleted();
+            //dataContext.Database.EnsureDeleted();
             dataContext.Database.EnsureCreated();
-            SeedDataBase(dataContext, env);
+            //SeedDataBase(dataContext, env);
 
             app.UseHttpsRedirection();
 

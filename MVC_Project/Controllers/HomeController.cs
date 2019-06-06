@@ -20,39 +20,24 @@ namespace MVC_Project.Controllers
             _dataContext = dataContext;
         }
 
-        public IActionResult Index(string sortOrder)
-        {   
-            ViewBag.SelectedNavigation = "home-index-nav";
 
+        public IActionResult Index()
+        {
+            ViewBag.SelectedNavigation = "home-index-nav";
             _dataContext.CheckReservedProducts(_resrevedTimeOut);
             _dataContext.SaveChanges();
-
-            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
-
-            var postList =
+            IQueryable<Product> postList =
                 _dataContext
                 .Products
                 .Include(p => p.Seller)
                 .Include(p => p.Images)
                 .Where(p => p.State == Product.States.Available);
 
-            switch (sortOrder)
+            bool isSort = HttpContext.Request.Query.TryGetValue("sort", out var sortType);
+            if (isSort)
             {
-                case "Title":
-                    postList = postList.OrderByDescending(p => p.Title);
-                    break;
-                case "Date":
-                    postList = postList.OrderBy(p => p.Date);
-                    break;
-                case "Price":
-                    postList = postList.OrderByDescending(p => p.Price);
-                    break;
-                default:
-                    postList = postList.OrderBy(p => p.Id);
-                    break;
+                postList = SortProducts(postList, sortType);
             }
-
             return View(postList.ToList());
         }
 
@@ -66,9 +51,44 @@ namespace MVC_Project.Controllers
             return product != null ? View(product) : (IActionResult)RedirectToAction("Error");
         }
 
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
             => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 
+
+
+        private IQueryable<Product> SortProducts(IQueryable<Product> postList, string sortType)
+        {
+            bool isDescending = HttpContext.Request.Query.TryGetValue("descending", out var asec);
+            if (isDescending)
+            {
+                switch (sortType)
+                {
+
+                    case "Date": return postList.OrderByDescending(p => p.Date);
+                    case "Title": return postList.OrderByDescending(p => p.Title);
+                    case "Price": return postList.OrderByDescending(p => p.Price);
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                switch (sortType)
+                {
+                    case "Date": return postList.OrderBy(p => p.Date);
+                    case "Title": return postList.OrderBy(p => p.Title);
+                    case "Price": return postList.OrderBy(p => p.Price);
+                    default:
+                        break;
+                }
+            }
+            return null;
+        }
     }
 }
+
+
+
+
