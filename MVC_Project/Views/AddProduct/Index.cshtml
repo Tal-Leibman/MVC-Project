@@ -4,28 +4,38 @@
 
 <h2>Add Product</h2>
 <form asp-controller="AddPRoduct" asp-action="Index" method="post" enctype="multipart/form-data">
-	<div>
-		<label asp-for="Title"></label>
-		<input asp-for="Title" />
-	</div>
-	<div>
-		<label asp-for="ShortDescription"></label>
-		<input asp-for="ShortDescription" />
-	</div>
-	<div>
-		<label asp-for="LongDescription"></label>
-		<input asp-for="LongDescription" />
-	</div>
-	<div>
-		<label asp-for="Price"></label>
-		<input asp-for="Price" />
-	</div>
+    <div>
+        <label asp-for="Title"></label>
+    </div>
+    <div>
+        <input asp-for="Title" />
+    </div>
+    <div>
+        <div>
+            <label asp-for="ShortDescription"></label>
+        </div>
+        <input asp-for="ShortDescription" />
+    </div>
+    <div>
+        <label asp-for="LongDescription"></label>
+    </div>
+    <div>
+        <input asp-for="LongDescription" />
+    </div>
+    <div>
 
-	<div>
-		<label asp-for="Images"></label>
-		<input asp-for="Images" multiple accept=@mimeService.GetAllowed() />
-	</div>
+        <label asp-for="Price"></label>
+    </div>
+    <div>
+        <input asp-for="Price" type="number" step="0.01" />
+    </div>
+    <div>
+        <label asp-for="Images"></label>
+    </div>
+    <div>
+        <input asp-for="Images" multiple accept=@mimeService.GetAllowed() />
+    </div>
 
-	<div asp-validation-summary="All"></div>
-	<input type="submit" value="Submit" />
+    <div asp-validation-summary="All"></div>
+    <input type="submit" value="Submit" />
 </form>
