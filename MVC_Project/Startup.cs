@@ -87,7 +87,7 @@ namespace MVC_Project
                 LongDescription = "jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.",
                 ShortDescription = "Trysail Sail ho Corsair red ensign hulk smartly",
                 SellerId = test_user_2.Id,
-                Price = 100.456,
+                Price = (decimal)100.456,
                 State = Product.States.Reserved,
                 Title = "Spoon"
             };
@@ -99,7 +99,7 @@ namespace MVC_Project
                 LongDescription = "l o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o n g description.",
                 ShortDescription = "shrt desc.",
                 SellerId = test_user_3.Id,
-                Price = 420.69,
+                Price = (decimal)420.69,
                 State = Product.States.Available,
                 Title = "A pile of shit"
             };
@@ -111,7 +111,7 @@ namespace MVC_Project
                 LongDescription = "l o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o n g description.",
                 ShortDescription = "Trysail Sail ho Corsair red ensign hulk smartly",
                 SellerId = test_user_2.Id,
-                Price = 1337.322,
+                Price = (decimal)1337.322,
                 State = Product.States.Available,
                 Title = "A bent spoon",
             };

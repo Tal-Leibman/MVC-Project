@@ -26,6 +26,8 @@ namespace MVC_Project.Controllers
                 .Include(p => p.Seller)
                 .Where(product => cart.ProductIds.Contains(product.Id))
                 .ToList();
+            ViewData["cartTotal"] = products.Sum(p => p.Price);
+            ViewData["memberDiscount"] = (decimal)0.1;
             return View(products);
         }
 
