@@ -2,7 +2,13 @@
 @{ ViewData["Title"] = "Register";}
 
 <h2>Register</h2>
-<form asp-controller="Register" asp-action="Register" method="post">
+<form asp-action="Index" method="post">
+	@if (ViewBag.UserExists)
+	{
+		<div class="alert alert-danger" role="alert">
+			That username is already taken.
+		</div>
+	}
 	<div>
 		<label asp-for="UserName"></label>
 		<input asp-for="UserName" />

@@ -30,7 +30,7 @@
 						</span>
 						@for (int i = 1; i < Model.Images.Count; i++)
 						{
-							<span class="carousel-item post-image-container">
+							<span class="carousel-item">
 								@await Component.InvokeAsync("ImageDisplay", Model.Images.ElementAt(i))
 							</span>
 						}
@@ -43,16 +43,16 @@
 			}
 			else
 			{
-				<div class="post-single-image-container">
+				<span class="post-single-image-container">
 					@await Component.InvokeAsync("ImageDisplay", Model.Images.ElementAt(0))
-				</div>
+				</span>
 			}
 		}
 		else
 		{
-			<div class="post-single-image-container">
+			<span class="post-single-image-container">
 				@await Component.InvokeAsync("ImageDisplay", null)
-			</div>
+			</span>
 		}
 
 		<div class="card-footer text-muted">
@@ -66,6 +66,6 @@
 		<div class="card-footer text-muted">
 			Added by: @userRepo.GetUser(Model.SellerId) Posted Date: @Model.Date.ToString("MMMM dd yyyy")
 		</div>
+		<a value="Add To Cart" class="btn btn-primary btn-lg btn-block" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id">Add to cart...</a>
 	</div>
-	<a value="Add To Cart" class="btn btn-primary btn-lg btn-block" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id">Add to cart...</a>
 </div>
