@@ -1,15 +1,13 @@
 ﻿@model Image
 
-<span class="proj-image">
-	@{
-		if (Model != null)
-		{
-			string base64 = Convert.ToBase64String(Model.ByteArray);
-			<img src=@String.Format("data:image/jpg;base64,{0}", base64) />
-		}
-		else
-		{
-			<img src="~/images/no_image.png" alt="no-image">
-		}
+@{
+	if (Model != null)
+	{
+		string base64 = Convert.ToBase64String(Model.ByteArray);
+		<img src=@String.Format("data:image/jpg;base64,{0}", base64) />
 	}
-</span>
+	else
+	{
+		<img src="~/images/no_image.png" alt="no-image">
+	}
+}

@@ -74,18 +74,6 @@ body {
 	text-align: center;
 }
 
-.proj-image {
-	height: 100%;
-	width: 100%;
-	display: inline-block;
-	vertical-align: middle;
-
-	img {
-		height: 100%;
-		width: 100%;
-	}
-}
-
 .post-container-mini {
 	display: inline-block;
 	vertical-align: top;
@@ -181,6 +169,28 @@ body {
 		.carousel-item {
 			height: 100%;
 			width: 100%;
+
+			img {
+				margin: 0;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				-ms-transform: translate(-50.5%, -50.5%);
+				transform: translate(-50.5%, -50.5%);
+				max-height: 100%;
+				max-width: 100%;
+			}
 		}
+	}
+}
+
+.post-single-image-container {
+	width: $post-container-mini-width;
+	object-fit: contain;
+
+	img {
+		margin: auto;
+		max-height: 100%;
+		max-width: 100%;
 	}
 }
