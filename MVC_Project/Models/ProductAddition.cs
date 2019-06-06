@@ -24,7 +24,7 @@ namespace MVC_Project.Models
         [DataType(DataType.Currency)]
         [Range(0, double.MaxValue, ErrorMessage = "Price cannot be negative")]
         [Display(Name = "Price")]
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
         public List<IFormFile> Images { get; set; }
     }
