@@ -38,5 +38,10 @@ namespace MVC_Project.Controllers
 
         public IActionResult Add(long Id)
             => _cartService.AddToCart(Id) ? RedirectToAction("Index") : RedirectToAction("Home", "Error");
+
+        public IActionResult Remove(long Id)
+        {
+            return _cartService.RemoveProduct(Id) ? RedirectToAction("Index") : RedirectToAction("Home", "Error");
+        }
     }
 }

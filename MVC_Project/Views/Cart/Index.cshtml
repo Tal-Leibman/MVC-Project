@@ -7,28 +7,31 @@
 <div class="list-group">
 	@foreach (var product in Model)
 	{
-		<div class="list-group-item list-group-item-action w-50">
-			<a asp-controller="Home" asp-action="ProductDetails" asp-route-id=@product.Id>
-				<div class="cart-item-image">
-					@if (product.Images != null && product.Images.Count > 0)
-					{
-						@await Component.InvokeAsync("ImageDisplay", product.Images.ElementAt(0))
-					}
-					else
-					{
-						@await Component.InvokeAsync("ImageDisplay", null)
-					}
-				</div>
-				<div class="cart-item-details">
-					<h5 class="mb-1">@product.Title</h5>
-					<small>@product.ShortDescription</small>
-					<br />
-					<small>@product.Price.ToString("C")</small>
-				</div>
-			</a>
-			<br />
-			<button type="button" class="btn btn-danger btn-lg w-100">Remove From cart</button>
-		</div>
+    <div class="list-group-item list-group-item-action w-50">
+        <a asp-controller="Home" asp-action="ProductDetails" asp-route-id=@product.Id>
+            <div class="cart-item-image">
+                @if (product.Images != null && product.Images.Count > 0)
+                {
+                    @await Component.InvokeAsync("ImageDisplay", product.Images.ElementAt(0))
+                }
+                else
+                {
+                    @await Component.InvokeAsync("ImageDisplay", null)
+                }
+            </div>
+            <div class="cart-item-details">
+                <h5 class="mb-1">@product.Title</h5>
+                <small>@product.ShortDescription</small>
+                <br />
+                <small>@product.Price.ToString("C")</small>
+            </div>
+        </a>
+        <br />
+
+        <a  asp-controller="Cart" asp-action="Remove" asp-route-id="@product.Id">
+        <button type="button" class="btn btn-danger btn-lg w-100">Remove From cart</button>
+        </a>
+    </div>
 	}
 </div>
 <div>
