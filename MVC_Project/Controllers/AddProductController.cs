@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVC_Project.Data;
+using MVC_Project.Helpers;
 using MVC_Project.Models;
 using MVC_Project.Services;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace MVC_Project.Controllers
@@ -33,7 +33,7 @@ namespace MVC_Project.Controllers
         [HttpPost]
         public IActionResult Index(ProductAddition product)
         {
-            if (!ValidateProduct(product))
+            if (!product.Validate())
                 return View();
 
             Product newProduct = new Product
@@ -53,9 +53,8 @@ namespace MVC_Project.Controllers
             };
 
             if (product.Images == null || product.Images.Count < 1)
-            {
                 newProduct.Images = null;
-            }
+
             else
             {
                 List<Image> imageList = new List<Image>();
@@ -77,17 +76,6 @@ namespace MVC_Project.Controllers
             _dataContext.Products.Add(newProduct);
             _dataContext.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        bool ValidateProduct(ProductAddition product)
-        {
-            if (product == null
-                || string.IsNullOrEmpty(product.Title)
-                || string.IsNullOrEmpty(product.ShortDescription)
-                || string.IsNullOrEmpty(product.LongDescription)
-                || product.Price <= 0)
-                return false;
-            return true;
         }
     }
 }

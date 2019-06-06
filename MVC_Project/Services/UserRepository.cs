@@ -1,4 +1,5 @@
 ﻿using MVC_Project.Data;
+using MVC_Project.Helpers;
 using MVC_Project.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,15 +39,6 @@ namespace MVC_Project.Services
             return _context.SaveChanges() > 0;
         }
 
-        bool ValidateRegisterUser(RegisterUser newUser)
-        {
-            return newUser != null
-                && !string.IsNullOrEmpty(newUser.UserName)
-                && !string.IsNullOrEmpty(newUser.Password)
-                && !string.IsNullOrEmpty(newUser.Email)
-                && !string.IsNullOrEmpty(newUser.FirstName)
-                && !string.IsNullOrEmpty(newUser.LastName)
-                && newUser.BirthDate != null;
-        }
+        bool ValidateRegisterUser(RegisterUser newUser) => newUser.Validate();
     }
 }

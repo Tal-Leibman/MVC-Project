@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using MVC_Project.Data;
 using MVC_Project.Models;
 using MVC_Project.Services;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace MVC_Project.Controllers
@@ -22,16 +21,15 @@ namespace MVC_Project.Controllers
         public IActionResult Index()
         {
             Cart cart = _cartService.GetCart();
-            var products =_dataContext.Products
+            var products = _dataContext.Products
                 .Include(p => p.Images)
                 .Include(p => p.Seller)
                 .Where(product => cart.ProductIds.Contains(product.Id))
                 .ToList();
             return View(products);
         }
+
         public IActionResult Add(long Id)
-        {
-            return _cartService.AddToCart(Id) ? RedirectToAction("Index") : RedirectToAction("Home", "Error");
-        }
+            => _cartService.AddToCart(Id) ? RedirectToAction("Index") : RedirectToAction("Home", "Error");
     }
 }

@@ -16,24 +16,44 @@ namespace MVC_Project.Controllers
 
         public HomeController(StoreDataContext dataContext, IConfiguration config)
         {
-            _dataContext = dataContext;
             _resrevedTimeOut = new TimeSpan(0, 0, config.GetValue<int>("ProductReservedTimeout"));
+            _dataContext = dataContext;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string sortOrder)
         {
             ViewBag.User = User?.Identity?.Name;
 
             _dataContext.CheckReservedProducts(_resrevedTimeOut);
             _dataContext.SaveChanges();
-            return View(
+
+            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
+            var postList =
                 _dataContext
                 .Products
                 .Include(p => p.Seller)
                 .Include(p => p.Images)
-                .Where(p => p.State == Product.States.Available)
-                .ToList()
-                );
+                .Where(p => p.State == Product.States.Available);
+
+            switch (sortOrder)
+            {
+                case "Title":
+                    postList = postList.OrderByDescending(p => p.Title);
+                    break;
+                case "Date":
+                    postList = postList.OrderBy(p => p.Date);
+                    break;
+                case "Price":
+                    postList = postList.OrderByDescending(p => p.Price);
+                    break;
+                default:
+                    postList = postList.OrderBy(p => p.Id);
+                    break;
+            }
+
+            return View(postList.ToList());
         }
 
         public IActionResult ProductDetails(long id)
@@ -48,8 +68,7 @@ namespace MVC_Project.Controllers
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+            => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
     }
 }

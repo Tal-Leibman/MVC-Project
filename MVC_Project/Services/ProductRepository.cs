@@ -1,13 +1,8 @@
 ﻿using MVC_Project.Data;
+using MVC_Project.Helpers;
 using MVC_Project.Models;
 using System.Collections.Generic;
 using System.Linq;
-
-//GetContents
-//RemoveProduct
-//AddProduct
-//ValidateContent
-//ReaddContentFromCookie
 
 namespace MVC_Project.Services
 {
@@ -21,7 +16,7 @@ namespace MVC_Project.Services
 
     public class ProductRepository : IProductRepository
     {
-        private StoreDataContext _context;
+        StoreDataContext _context;
 
         public ProductRepository(StoreDataContext ctx) => _context = ctx;
 
@@ -39,13 +34,6 @@ namespace MVC_Project.Services
             return _context.SaveChanges() > 0;
         }
 
-        bool ValidateProduct(Product product)
-        {
-            return product != null
-                && !string.IsNullOrEmpty(product.Title)
-                && !string.IsNullOrEmpty(product.ShortDescription)
-                && !string.IsNullOrEmpty(product.LongDescription)
-                && product.Price > 0;
-        }
+        bool ValidateProduct(Product product) => product.Validate();
     }
 }
