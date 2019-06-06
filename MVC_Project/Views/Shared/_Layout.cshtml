@@ -1,38 +1,42 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>@ViewData["Title"] - MVC_Project</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MVC_Project</title>
 
-	<script src="~/vendor-scripts/vendor.js"></script>
-	<script src="~/js/highlightHeaderLink.js"></script>
-	<link rel="stylesheet" href="~/vendor-styles/vendor.css" />
-	<link rel="stylesheet" href="~/styles/styles.css" />
+    <script src="~/vendor-scripts/vendor.js"></script>
+    <script src="~/js/highlightHeaderLink.js"></script>
+    <link rel="stylesheet" href="~/vendor-styles/vendor.css" />
+    <link rel="stylesheet" href="~/styles/styles.css" />
 </head>
 <body>
-	<nav class="proj-header">
-		<a id="home-index-nav" asp-controller="Home" asp-action="Index" class="navbar-brand">Home</a>
-		<a id="info-about-nav" asp-controller="Info" asp-action="About" class="navbar-brand">About</a>
-		<a id="info-faq-nav" asp-controller="Info" asp-action="Faq" class="navbar-brand">FAQ</a>
-		<a id="addProduct-index-nav" asp-controller="AddProduct" asp-action="Index" class="navbar-brand">Add Product</a>
-		<a id="cart-index-nav" asp-controller="Cart" asp-action="Index" class="navbar-brand">Cart</a>
+    <nav class="proj-header">
+        <a id="home-index-nav" asp-controller="Home" asp-action="Index" class="navbar-brand">Home</a>
+        <a id="info-about-nav" asp-controller="Info" asp-action="About" class="navbar-brand">About</a>
+        <a id="info-faq-nav" asp-controller="Info" asp-action="Faq" class="navbar-brand">FAQ</a>
+        <a id="addProduct-index-nav" asp-controller="AddProduct" asp-action="Index" class="navbar-brand">Add Product</a>
+        <a id="cart-index-nav" asp-controller="Cart" asp-action="Index" class="navbar-brand">Cart</a>
 
-		@if (User.Identity.IsAuthenticated)
-		{
-			<a asp-controller="Login" asp-action="LogOut" class="navbar-brand">Log Out</a>
-			<span class="navbar-brand">Logged in as: @User.Identity.Name</span>
-		}
-		else
-		{
-			<a id="register-index-nav" asp-controller="Register" asp-action="Index" class="navbar-brand">Register</a>
-			<a id="login-index-nav" asp-controller="Login" asp-action="Index" class="navbar-brand">Log In</a>
-		}
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a asp-controller="Login" asp-action="LogOut" class="navbar-brand">Log Out</a>
+            <span class="navbar-brand">Logged in as: @User.Identity.Name</span>
+        }
+        else
+        {
+            <a id="register-index-nav" asp-controller="Register" asp-action="Index" class="navbar-brand">Register</a>
+            <a id="login-index-nav" asp-controller="Login" asp-action="Index" class="navbar-brand">Log In</a>
+        }
 
-		<script>highlightHeaderLink("@ViewBag.SelectedNavigation.ToString()")</script>
-	</nav>
-	<div class="proj-body-container">
-		@RenderBody()
-	</div>
+        @if (ViewBag.SelectedNavigation != null)
+        {
+            <script>highlightHeaderLink("@ViewBag.SelectedNavigation.ToString()")</script>
+        }
+
+    </nav>
+    <div class="proj-body-container">
+        @RenderBody()
+    </div>
 </body>
 </html>
