@@ -10,22 +10,33 @@
 		{
 			if (Model.Images.Count > 1)
 			{
-				<div id="imageCarousel" class="carousel slide" data-ride="carousel">
-					<div class="carousel-inner">
-						<div class="carousel-item active">
-							@await Component.InvokeAsync("ImageDisplay", Model.Images.ElementAt(0))
-						</div>
+				<div id="productDetailsImageCarousel" class="carousel slide" data-ride="carousel">
+
+					<ol class="carousel-indicators">
+						<li data-target="#productDetailsImageCarousel" data-slide-to="0" class="active"></li>
 						@for (int i = 1; i < Model.Images.Count; i++)
 						{
-							<div class="carousel-item">
-								@await Component.InvokeAsync("ImageDisplay", Model.Images.ElementAt(i))
-							</div>
+							<li data-target="#productDetailsImageCarousel" data-slide-to=@i.ToString()></li>
 						}
-					</div>
-					<a class="carousel-control-prev" href="#imageCarousel" role="button" data-slide="prev">
+					</ol>
+
+					<a class="carousel-control-prev" href="#productDetailsImageCarousel" role="button" data-slide="prev">
 						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 					</a>
-					<a class="carousel-control-next" href="#iimageCarousel" role="button" data-slide="next">
+
+					<div class="carousel-inner">
+						<span class="carousel-item active">
+							@await Component.InvokeAsync("ImageDisplay", Model.Images.ElementAt(0))
+						</span>
+						@for (int i = 1; i < Model.Images.Count; i++)
+						{
+							<span class="carousel-item">
+								@await Component.InvokeAsync("ImageDisplay", Model.Images.ElementAt(i))
+							</span>
+						}
+					</div>
+
+					<a class="carousel-control-next" href="#productDetailsImageCarousel" role="button" data-slide="next">
 						<span class="carousel-control-next-icon" aria-hidden="true"></span>
 					</a>
 				</div>
@@ -40,7 +51,9 @@
 			@await Component.InvokeAsync("ImageDisplay", null)
 		}
 
-		<p class="card-text">@Model.LongDescription</p>
+		<div class="card-footer text-muted">
+			<p class="card-text">@Model.LongDescription</p>
+		</div>
 
 		<div class="card-footer text-muted">
 			Price: @Model.Price
