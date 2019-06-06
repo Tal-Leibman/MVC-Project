@@ -11,7 +11,11 @@ namespace MVC_Project.Controllers
 
         public LoginController(SignInManager<User> signInManager) => _signInManager = signInManager;
 
-        public IActionResult Index() => View();
+        public IActionResult Index()
+        {
+            ViewBag.SelectedNavigation = "login-index-nav";
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> Index(Login login)

@@ -11,7 +11,11 @@ namespace MVC_Project.Controllers
 
         public RegisterController(UserManager<User> userManager) => _userManager = userManager;
 
-        public IActionResult Index() => View();
+        public IActionResult Index()
+        {
+            ViewBag.SelectedNavigation = "register-index-nav";
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterUser registerUser)

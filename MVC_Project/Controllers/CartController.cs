@@ -20,6 +20,8 @@ namespace MVC_Project.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.SelectedNavigation = "cart-index-nav";
+
             Cart cart = _cartService.GetCart();
             var products = _dataContext.Products
                 .Include(p => p.Images)

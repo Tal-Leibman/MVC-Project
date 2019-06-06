@@ -24,10 +24,11 @@ namespace MVC_Project.Controllers
 
         public IActionResult Index()
         {
-            if (User.Identity.IsAuthenticated)
-                return View(new ProductAddition());
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Login");
 
-            return RedirectToAction("Index", "Login");
+            ViewBag.SelectedNavigation = "addProduct-index-nav";
+            return View(new ProductAddition());
         }
 
         [HttpPost]
