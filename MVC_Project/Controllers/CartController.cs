@@ -28,6 +28,8 @@ namespace MVC_Project.Controllers
                 .Include(p => p.Seller)
                 .Where(product => cart.ProductIds.Contains(product.Id))
                 .ToList();
+            ViewData["cartTotal"] = products.Sum(p => p.Price);
+            ViewData["memberDiscount"] = (decimal)0.1;
             return View(products);
         }
 
@@ -40,5 +42,10 @@ namespace MVC_Project.Controllers
 
         public IActionResult Add(long Id)
             => _cartService.AddToCart(Id) ? RedirectToAction("Index") : RedirectToAction("Home", "Error");
+
+        public IActionResult Remove(long Id)
+        {
+            return _cartService.RemoveProduct(Id) ? RedirectToAction("Index") : RedirectToAction("Home", "Error");
+        }
     }
 }

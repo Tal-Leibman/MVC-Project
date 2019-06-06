@@ -11,7 +11,7 @@ namespace MVC_Project.Services
     public interface ICartService
     {
         Cart GetCart();
-        bool RemoveProduct(int id);
+        bool RemoveProduct(long id);
         void ClearAllProducts();
         bool AddToCart(long id);
         void CheckOut();
@@ -55,7 +55,7 @@ namespace MVC_Project.Services
             return true;
         }
 
-        public bool RemoveProduct(int id)
+        public bool RemoveProduct(long id)
         {
             Product product = _dataContext.Products.Find(id);
             if (product == null)

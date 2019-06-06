@@ -30,6 +30,17 @@ namespace MVC_Project.Data
             modelBuilder.Entity<Image>()
                 .HasOne(image => image.Product)
                 .WithMany(product => product.Images);
+
+            //The default user if no user is logged in to the system
+            modelBuilder.Entity<User>().HasData(new User()
+            {
+                Id = Guid.NewGuid().ToString(),
+                FirstName = "anonymous",
+                LastName = "anonymous",
+                BirthDate = DateTime.Now,
+                Email = "anonymous@gmail.com",
+                UserName = "anonymous",
+            });
         }
 
         public void CheckReservedProducts(TimeSpan timeout)
