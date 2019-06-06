@@ -6,19 +6,40 @@
 	<div class="card-body bg-light text-center">
 		<h5 class="card-header">@Model.Title</h5>
 
-		<span class="oof">
-			@if (Model.Images != null && Model.Images.Count > 0)
+		@if (Model.Images != null && Model.Images.Count > 0)
+		{
+			if (Model.Images.Count > 1)
 			{
-				@for (int i = 0; i < Model.Images.Count; i++)
-				{
-					@await Component.InvokeAsync("ImageDisplay", Model.Images.ElementAt(i))
-				}
+				<div id="imageCarousel" class="carousel slide" data-ride="carousel">
+					<div class="carousel-inner">
+						<div class="carousel-item active">
+							@await Component.InvokeAsync("ImageDisplay", Model.Images.ElementAt(0))
+						</div>
+						@for (int i = 1; i < Model.Images.Count; i++)
+						{
+							<div class="carousel-item">
+								@await Component.InvokeAsync("ImageDisplay", Model.Images.ElementAt(i))
+							</div>
+						}
+					</div>
+					<a class="carousel-control-prev" href="#imageCarousel" role="button" data-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					</a>
+					<a class="carousel-control-next" href="#iimageCarousel" role="button" data-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					</a>
+				</div>
 			}
 			else
 			{
-				@await Component.InvokeAsync("ImageDisplay", null)
+				@await Component.InvokeAsync("ImageDisplay", Model.Images.ElementAt(0))
 			}
-		</span>
+		}
+		else
+		{
+			@await Component.InvokeAsync("ImageDisplay", null)
+		}
+
 		<p class="card-text">@Model.LongDescription</p>
 
 		<div class="card-footer text-muted">
