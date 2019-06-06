@@ -21,8 +21,7 @@ namespace MVC_Project.Controllers
         }
 
         public IActionResult Index(string sortOrder)
-        {
-            ViewBag.User = User?.Identity?.Name;
+        {   
 
             _dataContext.CheckReservedProducts(_resrevedTimeOut);
             _dataContext.SaveChanges();

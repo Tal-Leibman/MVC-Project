@@ -16,13 +16,14 @@ namespace MVC_Project.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(Login login)
         {
-            var res = await _signInManager.PasswordSignInAsync(login.UserName, login.Password, false, false);
+            var res = await _signInManager.PasswordSignInAsync(login.UserName, login.Password, true, false);
             return res == Microsoft.AspNetCore.Identity.SignInResult.Success ? RedirectToAction("Index", "Home") : RedirectToAction("Index");
         }
 
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
+            HttpContext.Response.Cookies.Delete("AspNetCore.Identity.Application");
             return RedirectToAction("Index");
         }
     }
