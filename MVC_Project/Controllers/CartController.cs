@@ -29,6 +29,13 @@ namespace MVC_Project.Controllers
             return View(products);
         }
 
+        public IActionResult CheckOut()
+        {
+            _cartService.CheckOut();
+            return RedirectToAction("Index");
+        }
+
+
         public IActionResult Add(long Id)
             => _cartService.AddToCart(Id) ? RedirectToAction("Index") : RedirectToAction("Home", "Error");
     }
