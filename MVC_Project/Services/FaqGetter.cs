@@ -21,7 +21,6 @@ namespace MVC_Project.Services
 
         public string[][] GetFaq()
         {
-            //config.GetValue<int>("ProductReservedTimeout")
             string path = $"{_host.ContentRootPath}{_config.GetValue<string>("FaqFilePathFromRoot")}";
             return JsonConvert.DeserializeObject<string[][]>(File.ReadAllText(path));
         }
