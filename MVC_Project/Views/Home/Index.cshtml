@@ -4,7 +4,7 @@
 
 @model List<Product>
 
-<form>
+<form id="mainPagePostSorting">
 	<div class="form-check">
 		<span>
 			<input type="radio" name="sort" value="Title" />
@@ -23,12 +23,11 @@
 			<input type="checkbox" name="descending" />
 			Descending
 		</span>
-		<span class="splitter"></span>
 		<input type="submit" value="Refresh" class="btn btn-primary" />
 	</div>
 </form>
 
-<div class="card-columns posts-container">
+<div id="mainPagePostContainer" class="card-columns posts-container">
 	@foreach (Product product in Model)
 	{
 		@await Component.InvokeAsync("PostMini", product)

@@ -10,8 +10,8 @@ namespace MVC_Project.Services
     public interface IProductRepository
     {
         Product GetProduct(long id);
-        Product GetProduct(long id, bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false);
-        IQueryable<Product> GetProductList(bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false);
+        Product GetProduct(long id, bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false, bool getRemoved = false);
+        IQueryable<Product> GetProductList(bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false, bool getRemoved = false);
         bool AddProduct(Product product);
         bool RemoveProduct(long id);
         bool ValidateProduct(Product product);
@@ -43,27 +43,28 @@ namespace MVC_Project.Services
                    .Where(p => p.State == Product.States.Available || p.State == Product.States.Reserved)
                    ?.FirstOrDefault(p => p.Id == id);
 
-            _context.Remove(product);
+            product.State = Product.States.Removed;
             return _context.SaveChanges() > 0;
         }
 
         public bool ValidateProduct(Product product) => product.Validate();
 
-        public Product GetProduct(long id, bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false)
+        public Product GetProduct(long id, bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false, bool getRemoved = false)
         {
             return GetProductList(includeImages, includeBuyer, includerSeller, getAvailable, getReserved, getSold)
                 .FirstOrDefault(p => p.Id == id);
         }
 
-        public IQueryable<Product> GetProductList(bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false)
+        public IQueryable<Product> GetProductList(bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false, bool getRemoved = false)
         {
             return _context
                 .Products
                 .Where(p => (getAvailable == true && p.State == Product.States.Available) ||
                             (getReserved == true && p.State == Product.States.Reserved) ||
+                            (getRemoved == true && p.State == Product.States.Removed) ||
                             (getSold == true && p.State == Product.States.Sold))
-                .If(includeImages, p => p.Include(p2 => p2.Images))
                 .If(includeBuyer, p => p.Include(p2 => p2.Buyer))
+                .If(includeImages, p => p.Include(p2 => p2.Images))
                 .If(includerSeller, p => p.Include(p2 => p2.Seller));
         }
     }

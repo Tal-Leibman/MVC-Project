@@ -11,11 +11,13 @@ namespace MVC_Project.Controllers
     public class HomeController : Controller
     {
         TimeSpan _resrevedTimeOut;
+        IUserRepository _userRepo;
         StoreDataContext _dataContext;
         IProductRepository _productRepository;
 
-        public HomeController(StoreDataContext dataContext, IProductRepository productRepository, IConfiguration config)
+        public HomeController(StoreDataContext dataContext, IProductRepository productRepository, IConfiguration config, IUserRepository userRepo)
         {
+            _userRepo = userRepo;
             _dataContext = dataContext;
             _productRepository = productRepository;
             _resrevedTimeOut = new TimeSpan(0, 0, config.GetValue<int>("ProductReservedTimeout"));
@@ -41,11 +43,16 @@ namespace MVC_Project.Controllers
             return product == default ? View("ProductError") : View(product);
         }
 
-        [HttpPost]
         public IActionResult RemoveProduct(long id)
         {
-            if (_productRepository.RemoveProduct(id))
-                return RedirectToAction("Index");
+            Product product = _productRepository.GetProduct(id);
+            if (product != null)
+            {
+                User seller = _userRepo.GetUser(product.SellerId);
+                if (seller != null && User.Identity.Name == seller.UserName)
+                    if (_productRepository.RemoveProduct(id))
+                        return RedirectToAction("Index");
+            }
             return View("ProductError");
         }
 
@@ -79,7 +86,3 @@ namespace MVC_Project.Controllers
 
     }
 }
-
-
-
-

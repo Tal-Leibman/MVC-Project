@@ -24,7 +24,7 @@ body {
 
 		* {
 			position: static;
-			line-height: ($header-button-width - $header-button-font-size)/2;
+			line-height: ($header-button-width - $header-button-font-size)/2.33;
 			font-size: $header-button-font-size*0.67;
 			text-align: center;
 			height: 100%;
@@ -47,7 +47,7 @@ body {
 @media only screen and (min-width: 1100px) {
 	.proj-header {
 		* {
-			line-height: ($header-button-width - $header-button-font-size)/2;
+			line-height: ($header-button-width - $header-button-font-size)/2.33;
 			font-size: $header-button-font-size;
 		}
 
@@ -61,6 +61,50 @@ body {
 	margin-top: $header-height;
 	width: 100%;
 	text-align: center;
+
+	#mainPagePostContainer {
+		margin-top: $header-height + $sort-filter-height;
+	}
+
+	#mainPagePostSorting {
+		position: fixed;
+		height: $sort-filter-height;
+		left: 0;
+		top: $header-height;
+		z-index: 1;
+
+		.form-check {
+			height: 100%;
+			padding: 0px;
+			padding-left: 10px;
+			background-color: white;
+			border-bottom: 2px solid #d3d3d3;
+
+			span {
+				vertical-align: top;
+
+				input {
+					vertical-align: middle;
+				}
+			}
+
+			.splitter {
+				display: inline-block;
+				width: 0;
+				height: 100%;
+				border-left: 2px solid #d3d3d3;
+			}
+
+			.btn-primary {
+				height: 100%;
+				padding-top: 0px;
+				padding-bottom: 0px;
+				border: 0px;
+				margin-left: -3px;
+				vertical-align: top;
+			}
+		}
+	}
 }
 
 .proj-body-container > * {
@@ -240,38 +284,5 @@ body {
 		input {
 			width: 65%;
 		}
-	}
-}
-
-.form-check {
-	height: $sort-filter-height;
-	padding: 0px;
-	padding-left: 10px;
-	position: fixed;
-	z-index: 1;
-	background-color: white;
-
-	span {
-		vertical-align: top;
-
-		input {
-			vertical-align: middle;
-		}
-	}
-
-	.splitter {
-		display: inline-block;
-		width: 0;
-		height: 100%;
-		border-left: 2px solid black;
-	}
-
-	.btn-primary {
-		height: 100%;
-		padding-top: 0px;
-		padding-bottom: 0px;
-		border: 0px;
-		margin: 0px;
-		vertical-align: top;
 	}
 }
