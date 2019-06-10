@@ -3,6 +3,7 @@ $header-button-width: 130px;
 $header-button-font-size: 20px;
 $body-container-top-border: 2px;
 $post-container-mini-width: 250px;
+$sort-filter-height: 30px;
 
 body {
 	background-color: ghostwhite;
@@ -18,6 +19,8 @@ body {
 		padding: 0px;
 		font-size: 0;
 		background-color: whitesmoke;
+		border-bottom: 2px solid black;
+		z-index: 2;
 
 		* {
 			position: static;
@@ -56,7 +59,6 @@ body {
 
 .proj-body-container {
 	margin-top: $header-height;
-	border-top: 2px solid black;
 	width: 100%;
 	text-align: center;
 }
@@ -211,4 +213,65 @@ body {
 .selected-navigation {
 	color: black;
 	text-decoration: none;
+}
+
+.form-group {
+	margin: 20px;
+	width: 500px;
+	background-color: white;
+	border-radius: 5px;
+
+	h2 {
+		width: 100%;
+		text-align: center;
+	}
+
+	div {
+		* {
+			display: inline-block;
+			margin-top: 2px;
+		}
+
+		label {
+			width: 33%;
+			padding-left: 5px;
+		}
+
+		input {
+			width: 65%;
+		}
+	}
+}
+
+.form-check {
+	height: $sort-filter-height;
+	padding: 0px;
+	padding-left: 10px;
+	position: fixed;
+	z-index: 1;
+	background-color: white;
+
+	span {
+		vertical-align: top;
+
+		input {
+			vertical-align: middle;
+		}
+	}
+
+	.splitter {
+		display: inline-block;
+		width: 0;
+		height: 100%;
+		border-left: 2px solid black;
+	}
+
+	.btn-primary {
+		height: 100%;
+		padding-top: 0px;
+		padding-bottom: 0px;
+		border: 0px;
+		margin: 0px;
+		vertical-align: top;
+	}
 }

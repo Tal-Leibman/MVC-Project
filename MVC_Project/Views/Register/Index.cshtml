@@ -1,39 +1,41 @@
 ﻿@model RegisterUser
 @{ ViewData["Title"] = "Register";}
 
-<h2>Register</h2>
 <form asp-action="Index" method="post">
-	@if (ViewBag.UserExists)
-	{
-		<div class="alert alert-danger" role="alert">
-			That username is already taken.
+	<div class="form-group">
+		<h2>Register</h2>
+		@if (ViewBag.UserExists)
+		{
+			<div class="alert alert-danger" role="alert">
+				That username is already taken.
+			</div>
+		}
+		<div>
+			<label asp-for="UserName"></label>
+			<input asp-for="UserName" class="form-control" />
 		</div>
-	}
-	<div>
-		<label asp-for="UserName"></label>
-		<input asp-for="UserName" />
-	</div>
-	<div>
-		<label asp-for="FirstName"></label>
-		<input asp-for="FirstName" />
-	</div>
-	<div>
-		<label asp-for="LastName"></label>
-		<input asp-for="LastName" />
-	</div>
-	<div>
-		<label asp-for="Email"></label>
-		<input asp-for="Email" />
-	</div>
-	<div>
-		<label asp-for="Password"></label>
-		<input asp-for="Password" />
-	</div>
-	<div>
-		<label asp-for="BirthDate"></label>
-		<input asp-for="BirthDate" />
-	</div>
+		<div>
+			<label asp-for="FirstName"></label>
+			<input asp-for="FirstName" class="form-control" />
+		</div>
+		<div>
+			<label asp-for="LastName"></label>
+			<input asp-for="LastName" class="form-control" />
+		</div>
+		<div>
+			<label asp-for="Email"></label>
+			<input asp-for="Email" class="form-control" />
+		</div>
+		<div>
+			<label asp-for="Password"></label>
+			<input asp-for="Password" class="form-control" />
+		</div>
+		<div>
+			<label asp-for="BirthDate"></label>
+			<input asp-for="BirthDate" class="form-control" />
+		</div>
 
-	<div asp-validation-summary="All"></div>
-	<input type="submit" value="Register" />
+		<div asp-validation-summary="All"></div>
+		<input type="submit" class="btn btn-primary btn-block" value="Register" />
+	</div>
 </form>

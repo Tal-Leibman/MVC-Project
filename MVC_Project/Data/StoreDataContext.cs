@@ -51,6 +51,8 @@ namespace MVC_Project.Data
 
             foreach (Product product in productsToClear)
                 product.State = Product.States.Available;
+
+            SaveChanges();
         }
     }
 }

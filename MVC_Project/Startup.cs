@@ -25,11 +25,12 @@ namespace MVC_Project
             services.AddDbContext<StoreDataContext>(options =>
             { options.UseSqlite("DataSource=storeData.db"); });
 
-            services.AddTransient<IImageConverter, ImageConverter>();
             services.AddTransient<IFaqGetter, FaqGetter>();
-            services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<ICartService, CartService>();
             services.AddTransient<IAllowedMimes, AllowedMimes>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IImageConverter, ImageConverter>();
+            services.AddTransient<IProductRepository, ProductRepository>();
 
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<StoreDataContext>();
             services.AddMvc();
