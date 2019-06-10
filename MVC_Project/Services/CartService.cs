@@ -108,6 +108,7 @@ namespace MVC_Project.Services
                 .Products
                 .Where(p => cart.ProductIds.Contains(p.Id))
                 .Where(p => p.State != Product.States.Sold)
+                .Where(p => p.State != Product.States.Removed)
                 .ToList()
                 .ForEach(p =>
                 {

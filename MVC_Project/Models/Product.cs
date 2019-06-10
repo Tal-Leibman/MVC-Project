@@ -7,7 +7,7 @@ namespace MVC_Project.Models
 {
     public class Product
     {
-        public enum States : byte { Available, Reserved, Sold }
+        public enum States : byte { Available, Reserved, Sold, Removed }
 
         [HiddenInput(DisplayValue = false)]
         public long Id { get; set; }
