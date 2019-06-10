@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MVC_Project.Data;
 using MVC_Project.Models;
+using MVC_Project.Services;
 using System;
 using System.Linq;
 
@@ -10,44 +10,43 @@ namespace MVC_Project.Controllers
 {
     public class HomeController : Controller
     {
-        StoreDataContext _dataContext;
         TimeSpan _resrevedTimeOut;
+        StoreDataContext _dataContext;
+        IProductRepository _productRepository;
 
-        public HomeController(StoreDataContext dataContext, IConfiguration config)
+        public HomeController(StoreDataContext dataContext, IProductRepository productRepository, IConfiguration config)
         {
-            _resrevedTimeOut = new TimeSpan(0, 0, config.GetValue<int>("ProductReservedTimeout"));
             _dataContext = dataContext;
+            _productRepository = productRepository;
+            _resrevedTimeOut = new TimeSpan(0, 0, config.GetValue<int>("ProductReservedTimeout"));
         }
 
         public IActionResult Index()
         {
             ViewBag.SelectedNavigation = "home-index-nav";
             _dataContext.CheckReservedProducts(_resrevedTimeOut);
-            _dataContext.SaveChanges();
-            IQueryable<Product> postList =
-                _dataContext
-                .Products
-                .Include(p => p.Seller)
-                .Include(p => p.Images)
-                .Where(p => p.State == Product.States.Available);
+
+            IQueryable<Product> postList = _productRepository.GetProductList(includeImages: true, includerSeller: true, getAvailable: true);
 
             bool isSort = HttpContext.Request.Query.TryGetValue("sort", out var sortType);
             if (isSort)
-            {
                 postList = SortProducts(postList, sortType);
-            }
+
             return View(postList.ToList());
         }
 
         public IActionResult ProductDetails(long id)
         {
-            Product product = _dataContext
-                   .Products
-                   .Where(p => p.State == Product.States.Available)
-                   ?.Include(p => p.Seller)
-                   .Include(p => p.Images)
-                   .FirstOrDefault(p => p.Id == id);
-            return product != null ? View(product) : View("ProductError");
+            Product product = _productRepository.GetProduct(id, includeImages: true, includerSeller: true, getAvailable: true);
+            return product == default ? View("ProductError") : View(product);
+        }
+
+        [HttpPost]
+        public IActionResult RemoveProduct(long id)
+        {
+            if (_productRepository.RemoveProduct(id))
+                return RedirectToAction("Index");
+            return View("ProductError");
         }
 
         IQueryable<Product> SortProducts(IQueryable<Product> postList, string sortType)
@@ -57,7 +56,6 @@ namespace MVC_Project.Controllers
             {
                 switch (sortType)
                 {
-
                     case "Date": return postList.OrderByDescending(p => p.Date);
                     case "Title": return postList.OrderByDescending(p => p.Title);
                     case "Price": return postList.OrderByDescending(p => p.Price);
