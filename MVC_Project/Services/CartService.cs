@@ -19,14 +19,16 @@ namespace MVC_Project.Services
 
     public class CartService : ICartService
     {
-        readonly StoreDataContext _dataContext;
-        readonly IHttpContextAccessor _httpContext;
-        readonly string _anonymousUser;
+        StoreDataContext _dataContext;
+        IHttpContextAccessor _httpContext;
+        IProductRepository _productRepo;
+        string _anonymousUser;
 
-        public CartService(StoreDataContext dataContext, IHttpContextAccessor httpContext)
+        public CartService(StoreDataContext dataContext, IHttpContextAccessor httpContext, IProductRepository productRepo)
         {
             _dataContext = dataContext;
             _httpContext = httpContext;
+            _productRepo = productRepo;
             _anonymousUser = "anonymous";
         }
 
@@ -40,7 +42,7 @@ namespace MVC_Project.Services
 
         public bool AddToCart(long id)
         {
-            Product product = _dataContext.Products.Find(id);
+            Product product = _productRepo.GetProduct(id);
             if (product?.State != Product.States.Available)
                 return false;
 
@@ -57,7 +59,7 @@ namespace MVC_Project.Services
 
         public bool RemoveProduct(long id)
         {
-            Product product = _dataContext.Products.Find(id);
+            Product product = _productRepo.GetProduct(id);
             if (product == null)
                 return false;
 
@@ -73,8 +75,8 @@ namespace MVC_Project.Services
 
             return false;
         }
-        
-        
+
+
         Cart ParseCookie()
         {
             string userName = _httpContext.HttpContext.User.Identity.IsAuthenticated ? _httpContext.HttpContext.User.Identity.Name : _anonymousUser;
@@ -88,9 +90,7 @@ namespace MVC_Project.Services
             catch
             {
                 cart = new Cart()
-                {
-                    UserName = userName
-                };
+                { UserName = userName };
             }
 
             return cart;
