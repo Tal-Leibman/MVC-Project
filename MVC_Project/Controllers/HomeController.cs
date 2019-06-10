@@ -4,22 +4,20 @@ using Microsoft.Extensions.Configuration;
 using MVC_Project.Data;
 using MVC_Project.Models;
 using System;
-using System.Diagnostics;
 using System.Linq;
 
 namespace MVC_Project.Controllers
 {
     public class HomeController : Controller
     {
-        private StoreDataContext _dataContext;
-        private TimeSpan _resrevedTimeOut;
+        StoreDataContext _dataContext;
+        TimeSpan _resrevedTimeOut;
 
         public HomeController(StoreDataContext dataContext, IConfiguration config)
         {
             _resrevedTimeOut = new TimeSpan(0, 0, config.GetValue<int>("ProductReservedTimeout"));
             _dataContext = dataContext;
         }
-
 
         public IActionResult Index()
         {
@@ -45,20 +43,14 @@ namespace MVC_Project.Controllers
         {
             Product product = _dataContext
                    .Products
-                   .Include(p => p.Seller)
+                   .Where(p => p.State == Product.States.Available)
+                   ?.Include(p => p.Seller)
                    .Include(p => p.Images)
                    .FirstOrDefault(p => p.Id == id);
-            return product != null ? View(product) : (IActionResult)RedirectToAction("Error");
+            return product != null ? View(product) : View("ProductError");
         }
 
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-            => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-
-
-
-        private IQueryable<Product> SortProducts(IQueryable<Product> postList, string sortType)
+        IQueryable<Product> SortProducts(IQueryable<Product> postList, string sortType)
         {
             bool isDescending = HttpContext.Request.Query.TryGetValue("descending", out var asec);
             if (isDescending)
@@ -69,8 +61,7 @@ namespace MVC_Project.Controllers
                     case "Date": return postList.OrderByDescending(p => p.Date);
                     case "Title": return postList.OrderByDescending(p => p.Title);
                     case "Price": return postList.OrderByDescending(p => p.Price);
-                    default:
-                        break;
+                    default: break;
                 }
             }
             else
@@ -80,8 +71,7 @@ namespace MVC_Project.Controllers
                     case "Date": return postList.OrderBy(p => p.Date);
                     case "Title": return postList.OrderBy(p => p.Title);
                     case "Price": return postList.OrderBy(p => p.Price);
-                    default:
-                        break;
+                    default: break;
                 }
             }
             return null;

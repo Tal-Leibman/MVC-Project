@@ -66,6 +66,14 @@
 		<div class="card-footer text-muted">
 			Added by: @userRepo.GetUser(Model.SellerId) Posted Date: @Model.Date.ToString("MMMM dd yyyy")
 		</div>
-		<a value="Add To Cart" class="btn btn-primary btn-lg btn-block" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id">Add to cart...</a>
+
+		@if (User.Identity.IsAuthenticated && User.Identity.Name == userRepo.GetUser(Model.SellerId).UserName)
+		{
+			<a value="Add To Cart" class="btn btn-danger btn-lg btn-block" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id">Remove product</a>
+		}
+		else
+		{
+			<a value="Add To Cart" class="btn btn-primary btn-lg btn-block" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id">Add to cart</a>
+		}
 	</div>
 </div>
