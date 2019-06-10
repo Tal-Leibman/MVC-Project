@@ -69,7 +69,7 @@
 
 		@if (User.Identity.IsAuthenticated && User.Identity.Name == userRepo.GetUser(Model.SellerId).UserName)
 		{
-			<a value="Add To Cart" class="btn btn-danger btn-lg btn-block" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id">Remove product</a>
+			<a value="Add To Cart" class="btn btn-danger btn-lg btn-block" asp-controller="Home" asp-action="RemoveProduct" asp-route-id="@Model.Id">Remove product</a>
 		}
 		else
 		{

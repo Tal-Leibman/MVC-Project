@@ -1,4 +1,4 @@
-/// <binding AfterBuild='_initAll' ProjectOpened='_initAll' />
+/// <binding AfterBuild='_initAll' ProjectOpened='sass-watch' />
 var gulp = require('gulp')
 var sass = require('gulp-sass')
 var concat = require('gulp-concat')
