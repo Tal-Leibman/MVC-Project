@@ -74,7 +74,7 @@ namespace MVC_Project.Controllers
             }
 
             if (_productRepository.AddProduct(newProduct))
-                return View("AddProductError");
+                return RedirectToAction("Home", "Error");
             return RedirectToAction("Index");
         }
     }

@@ -49,6 +49,8 @@ namespace MVC_Project.Controllers
             return View("ProductError");
         }
 
+        public IActionResult Error() => View();
+
         IQueryable<Product> SortProducts(IQueryable<Product> postList, string sortType)
         {
             bool isDescending = HttpContext.Request.Query.TryGetValue("descending", out var asec);
@@ -74,6 +76,7 @@ namespace MVC_Project.Controllers
             }
             return null;
         }
+
     }
 }
 
