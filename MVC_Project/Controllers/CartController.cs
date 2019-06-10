@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MVC_Project.Data;
 using MVC_Project.Models;
 using MVC_Project.Services;
 using System.Linq;
@@ -9,13 +7,13 @@ namespace MVC_Project.Controllers
 {
     public class CartController : Controller
     {
-        private readonly ICartService _cartService;
-        private readonly StoreDataContext _dataContext;
+        ICartService _cartService;
+        IProductRepository _productRepository;
 
-        public CartController(ICartService cartService, StoreDataContext dataContext)
+        public CartController(ICartService cartService, IProductRepository productRepository)
         {
             _cartService = cartService;
-            _dataContext = dataContext;
+            _productRepository = productRepository;
         }
 
         public IActionResult Index()
@@ -23,11 +21,11 @@ namespace MVC_Project.Controllers
             ViewBag.SelectedNavigation = "cart-index-nav";
 
             Cart cart = _cartService.GetCart();
-            var products = _dataContext.Products
-                .Include(p => p.Images)
-                .Include(p => p.Seller)
+
+            var products = _productRepository.GetProductList(includeImages: true, includerSeller: true)
                 .Where(product => cart.ProductIds.Contains(product.Id))
                 .ToList();
+
             ViewData["cartTotal"] = products.Sum(p => p.Price);
             ViewData["memberDiscount"] = (decimal)0.1;
             return View(products);

@@ -9,7 +9,6 @@ namespace MVC_Project.Services
 {
     public interface IProductRepository
     {
-        List<Product> GetProductList();
         Product GetProduct(long id);
         Product GetProduct(long id, bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false);
         IQueryable<Product> GetProductList(bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false);
@@ -23,10 +22,8 @@ namespace MVC_Project.Services
     {
         StoreDataContext _context;
 
-
         public ProductRepository(StoreDataContext ctx) => _context = ctx;
 
-        public List<Product> GetProductList() => _context.Products.ToList();
         public Product GetProduct(long id) => _context.Products.FirstOrDefault(p => p.Id == id);
         public void UpdateState(long id, Product.States state) => GetProduct(id).State = state;
 

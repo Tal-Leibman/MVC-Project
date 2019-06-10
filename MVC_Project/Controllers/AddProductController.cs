@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MVC_Project.Data;
 using MVC_Project.Helpers;
 using MVC_Project.Models;
 using MVC_Project.Services;
@@ -11,15 +10,15 @@ namespace MVC_Project.Controllers
 {
     public class AddProductController : Controller
     {
-        StoreDataContext _dataContext;
         IUserRepository _userRepository;
         IImageConverter _imageConverter;
+        IProductRepository _productRepository;
 
-        public AddProductController(StoreDataContext dataContext, IUserRepository userRepository, IImageConverter imageConverter)
+        public AddProductController(IUserRepository userRepository, IImageConverter imageConverter, IProductRepository productRepository)
         {
-            _dataContext = dataContext;
             _userRepository = userRepository;
             _imageConverter = imageConverter;
+            _productRepository = productRepository;
         }
 
         public IActionResult Index()
@@ -74,8 +73,8 @@ namespace MVC_Project.Controllers
                 newProduct.Images = imageList;
             }
 
-            _dataContext.Products.Add(newProduct);
-            _dataContext.SaveChanges();
+            if (_productRepository.AddProduct(newProduct))
+                return View("AddProductError");
             return RedirectToAction("Index");
         }
     }
