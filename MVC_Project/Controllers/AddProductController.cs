@@ -24,7 +24,7 @@ namespace MVC_Project.Controllers
         public IActionResult Index()
         {
             if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("LogIn", "User");
 
             ViewBag.SelectedNavigation = "addProduct-index-nav";
             return View(new ProductAddition());
@@ -46,9 +46,9 @@ namespace MVC_Project.Controllers
                 Price = product.Price,
                 Images = null,
                 State = Product.States.Available,
-                SellerId = _userRepository.GetUserList().FirstOrDefault(u => u.UserName.Equals(User.Identity.Name)).Id,
+                SellerId = _userRepository.GetUserList.FirstOrDefault(u => u.UserName.Equals(User.Identity.Name)).Id,
                 BuyerId = null,
-                Seller = _userRepository.GetUserList().FirstOrDefault(u => u.UserName.Equals(User.Identity.Name)),
+                Seller = _userRepository.GetUserList.FirstOrDefault(u => u.UserName.Equals(User.Identity.Name)),
                 Buyer = null
             };
 
