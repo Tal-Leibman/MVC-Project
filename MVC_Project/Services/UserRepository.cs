@@ -8,9 +8,10 @@ namespace MVC_Project.Services
 {
     public interface IUserRepository
     {
-        List<User> GetUserList();
+        IQueryable<User> GetUserList { get; }
         User GetUser(string id);
         bool AddUser(RegisterUser user);
+        bool UpdateUser(string id, User newDetails);
     }
 
     public class UserRepository : IUserRepository
@@ -19,7 +20,7 @@ namespace MVC_Project.Services
 
         public UserRepository(StoreDataContext ctx) => _context = ctx;
 
-        public List<User> GetUserList() => _context.Users.ToList();
+        public IQueryable<User> GetUserList => _context.Users;
         public User GetUser(string id) => _context.Users.FirstOrDefault(u => u.Id == id);
 
         public bool AddUser(RegisterUser newUser)
@@ -36,6 +37,19 @@ namespace MVC_Project.Services
                 BirthDate = newUser.BirthDate,
             };
             _context.Users.Add(user);
+            return _context.SaveChanges() > 0;
+        }
+
+        public bool UpdateUser(string id, User newDetails)
+        {
+            User user = _context.Users.FirstOrDefault(u => u.Id.Equals(id));
+            if (user == null)
+                return false;
+
+            user.FirstName = newDetails.FirstName;
+            user.LastName = newDetails.LastName;
+            user.BirthDate = newDetails.BirthDate;
+
             return _context.SaveChanges() > 0;
         }
 

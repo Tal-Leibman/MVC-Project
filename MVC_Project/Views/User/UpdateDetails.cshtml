@@ -1,0 +1,34 @@
+﻿
+@{ ViewData["Title"] = "UpdateDetails"; }
+@model User
+
+<form asp-action="UpdateDetails" method="post">
+	<div class="form-group">
+		<h2>Update Details</h2>
+		<input type="hidden" asp-for="Id" />
+		<div>
+			<label asp-for="UserName"></label>
+			<input asp-for="UserName" class="form-control" readonly="readonly" />
+		</div>
+		<div>
+			<label asp-for="FirstName"></label>
+			<input asp-for="FirstName" class="form-control" />
+		</div>
+		<div>
+			<label asp-for="LastName"></label>
+			<input asp-for="LastName" class="form-control" />
+		</div>
+		<div>
+			<label asp-for="Email"></label>
+			<input asp-for="Email" class="form-control" />
+		</div>
+		<div>
+			<label asp-for="BirthDate"></label>
+			<input asp-for="BirthDate" class="form-control" />
+		</div>
+
+		<div asp-validation-summary="All"></div>
+		<input type="submit" class="btn btn-primary btn-block" value="Update" />
+	</div>
+</form>
+

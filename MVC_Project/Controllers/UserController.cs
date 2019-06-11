@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVC_Project.Helpers;
 using MVC_Project.Models;
+using MVC_Project.Services;
 
 namespace MVC_Project.Controllers
 {
@@ -13,11 +14,13 @@ namespace MVC_Project.Controllers
     {
         UserManager<User> _userManager;
         SignInManager<User> _signInManager;
+        IUserRepository _userRepo;
 
-        public UserController(SignInManager<User> signInManager, UserManager<User> userManager)
+        public UserController(SignInManager<User> signInManager, UserManager<User> userManager, IUserRepository userRepo)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _userRepo = userRepo;
         }
 
 
@@ -75,7 +78,32 @@ namespace MVC_Project.Controllers
             };
 
             IdentityResult res = await _userManager.CreateAsync(newUser, registerUser.Password);
-            return res == IdentityResult.Success ? RedirectToAction("Index", "Login") : Register(true);
+            return res == IdentityResult.Success ? LogIn() : Register(true);
+        }
+
+        // ----- Edit details
+
+        public IActionResult UpdateDetails()
+        {
+            if (!User.Identity.IsAuthenticated)
+                return LogIn();
+
+            User model = _userRepo.GetUserList.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateDetails(User newDetails)
+        {
+            if (!User.Identity.IsAuthenticated)
+                return LogIn();
+
+            string userID = _userRepo.GetUserList.FirstOrDefault(u => u.UserName == User.Identity.Name)?.Id;
+            if (userID == default)
+                return LogIn();
+
+            bool success = _userRepo.UpdateUser(userID, newDetails);
+            return UpdateDetails();
         }
     }
 }
