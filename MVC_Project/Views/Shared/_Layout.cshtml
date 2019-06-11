@@ -20,13 +20,13 @@
 
         @if (User.Identity.IsAuthenticated)
         {
-            <a asp-controller="Login" asp-action="LogOut" class="navbar-brand">Log Out</a>
+            <a asp-controller="User" asp-action="LogOut" class="navbar-brand">Log Out</a>
             <span class="navbar-brand">Logged in as: @User.Identity.Name</span>
         }
         else
         {
-            <a id="register-index-nav" asp-controller="Register" asp-action="Index" class="navbar-brand">Register</a>
-            <a id="login-index-nav" asp-controller="Login" asp-action="Index" class="navbar-brand">Log In</a>
+            <a id="register-index-nav" asp-controller="User" asp-action="Register" class="navbar-brand">Register</a>
+            <a id="login-index-nav" asp-controller="User" asp-action="LogIn" class="navbar-brand">Log In</a>
         }
 
         @if (ViewBag.SelectedNavigation != null)

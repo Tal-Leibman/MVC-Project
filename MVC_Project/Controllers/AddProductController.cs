@@ -24,7 +24,7 @@ namespace MVC_Project.Controllers
         public IActionResult Index()
         {
             if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("LogIn", "User");
 
             ViewBag.SelectedNavigation = "addProduct-index-nav";
             return View(new ProductAddition());
