@@ -10,7 +10,7 @@ namespace MVC_Project.Services
     {
         Product GetProduct(long id);
         Product GetProduct(long id, bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false, bool getRemoved = false);
-        IQueryable<Product> GetProductList(int offset = 0, int count = 0, bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false, bool getRemoved = false);
+        IQueryable<Product> GetProductList(int offset = 0, int count = int.MaxValue, bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false, bool getRemoved = false);
         bool AddProduct(Product product);
         bool RemoveProduct(long id);
         bool ValidateProduct(Product product);
@@ -50,11 +50,11 @@ namespace MVC_Project.Services
 
         public Product GetProduct(long id, bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false, bool getRemoved = false)
         {
-            return GetProductList(0, 0, includeImages, includeBuyer, includerSeller, getAvailable, getReserved, getSold)
+            return GetProductList(0, int.MaxValue, includeImages, includeBuyer, includerSeller, getAvailable, getReserved, getSold)
                 .FirstOrDefault(p => p.Id == id);
         }
 
-        public IQueryable<Product> GetProductList(int offset = 0, int count = 0, bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false, bool getRemoved = false)
+        public IQueryable<Product> GetProductList(int offset = 0, int count = int.MaxValue, bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false, bool getRemoved = false)
         {
             return _context
                 .Products
