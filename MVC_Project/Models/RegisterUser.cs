@@ -15,6 +15,13 @@ namespace MVC_Project.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [MaxLength(60)]
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name ="Confirm Password")]
+        [Compare("Password", ErrorMessage = "Confirm password doesn't match")]
+        public string ConfirmPassword { get; set; }
+
         [Display(Name = "First Name")]
         [MaxLength(50)]
         public string FirstName { get; set; }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MVC_Project.Helpers;
 using MVC_Project.Models;
 using MVC_Project.Services;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -50,10 +51,10 @@ namespace MVC_Project.Controllers
 
         // ----- Registering
 
-        public IActionResult Register(bool userExists = false)
+        public IActionResult Register(List<IdentityError> errors = null)
         {
             ViewBag.SelectedNavigation = "register-index-nav";
-            ViewBag.UserExists = userExists;
+            ViewData["errors"] = errors;
             return View();
         }
 
@@ -61,7 +62,13 @@ namespace MVC_Project.Controllers
         public async Task<IActionResult> Register(RegisterUser registerUser)
         {
             if (!registerUser.Validate())
-                return Register(false);
+            {
+                var errorlist = new List<IdentityError>(1)
+                {
+                    new IdentityError { Description = "Invalid User input for registration" }
+                };
+                return Register(errors: errorlist);
+            }
 
             var newUser = new User()
             {
@@ -71,9 +78,12 @@ namespace MVC_Project.Controllers
                 LastName = registerUser.LastName,
                 BirthDate = registerUser.BirthDate,
             };
-
             IdentityResult res = await _userManager.CreateAsync(newUser, registerUser.Password);
-            return res == IdentityResult.Success ? RedirectToAction("LogIn") : Register(true);
+            if (res.Succeeded)
+            {
+                return RedirectToAction("Login");
+            }
+            return Register(res.Errors.ToList());
         }
 
         // ----- Edit details
