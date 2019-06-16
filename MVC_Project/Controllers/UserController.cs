@@ -73,7 +73,7 @@ namespace MVC_Project.Controllers
             };
 
             IdentityResult res = await _userManager.CreateAsync(newUser, registerUser.Password);
-            return res == IdentityResult.Success ? LogIn() : Register(true);
+            return res == IdentityResult.Success ? RedirectToAction("LogIn") : Register(true);
         }
 
         // ----- Edit details
