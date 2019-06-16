@@ -2,7 +2,6 @@
 using MVC_Project.Data;
 using MVC_Project.Helpers;
 using MVC_Project.Models;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace MVC_Project.Services
@@ -11,7 +10,7 @@ namespace MVC_Project.Services
     {
         Product GetProduct(long id);
         Product GetProduct(long id, bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false, bool getRemoved = false);
-        IQueryable<Product> GetProductList(bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false, bool getRemoved = false);
+        IQueryable<Product> GetProductList(int offset = 0, int count = int.MaxValue, bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false, bool getRemoved = false);
         bool AddProduct(Product product);
         bool RemoveProduct(long id);
         bool ValidateProduct(Product product);
@@ -51,11 +50,11 @@ namespace MVC_Project.Services
 
         public Product GetProduct(long id, bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false, bool getRemoved = false)
         {
-            return GetProductList(includeImages, includeBuyer, includerSeller, getAvailable, getReserved, getSold)
+            return GetProductList(0, int.MaxValue, includeImages, includeBuyer, includerSeller, getAvailable, getReserved, getSold)
                 .FirstOrDefault(p => p.Id == id);
         }
 
-        public IQueryable<Product> GetProductList(bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false, bool getRemoved = false)
+        public IQueryable<Product> GetProductList(int offset = 0, int count = int.MaxValue, bool includeImages = false, bool includeBuyer = false, bool includerSeller = false, bool getAvailable = false, bool getReserved = false, bool getSold = false, bool getRemoved = false)
         {
             return _context
                 .Products
@@ -65,7 +64,9 @@ namespace MVC_Project.Services
                             (getSold == true && p.State == Product.States.Sold))
                 .If(includeBuyer, p => p.Include(p2 => p2.Buyer))
                 .If(includeImages, p => p.Include(p2 => p2.Images))
-                .If(includerSeller, p => p.Include(p2 => p2.Seller));
+                .If(includerSeller, p => p.Include(p2 => p2.Seller))
+                .Skip(offset)
+                .Take(count);
         }
     }
 }
