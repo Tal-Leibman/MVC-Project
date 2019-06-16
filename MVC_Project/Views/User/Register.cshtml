@@ -4,7 +4,7 @@
 <form asp-action="Register" method="post">
 	<div class="form-group">
 		<h2>Register</h2>
-		@if (ViewBag.UserExists)
+		@if (ViewBag.UserExists != null && ViewBag.UserExists)
 		{
 			<div class="alert alert-danger" role="alert">
 				That username is already taken.

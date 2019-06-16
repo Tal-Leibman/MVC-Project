@@ -14,6 +14,7 @@ namespace MVC_Project.Controllers
         IUserRepository _userRepo;
         StoreDataContext _dataContext;
         IProductRepository _productRepository;
+        readonly int _itemsPerPage;
 
         public HomeController(StoreDataContext dataContext, IProductRepository productRepository, IConfiguration config, IUserRepository userRepo)
         {
@@ -21,6 +22,7 @@ namespace MVC_Project.Controllers
             _dataContext = dataContext;
             _productRepository = productRepository;
             _resrevedTimeOut = new TimeSpan(0, 0, config.GetValue<int>("ProductReservedTimeout"));
+            _itemsPerPage = config.GetValue<int>("IndexPageItemCount");
         }
 
         public IActionResult Index()
@@ -28,7 +30,10 @@ namespace MVC_Project.Controllers
             ViewBag.SelectedNavigation = "home-index-nav";
             _dataContext.CheckReservedProducts(_resrevedTimeOut);
 
-            IQueryable<Product> postList = _productRepository.GetProductList(includeImages: true, includerSeller: true, getAvailable: true);
+            //int page = int.Parse(HttpContext.Request.Query["Page"]);
+            int page = 0;
+
+            IQueryable<Product> postList = _productRepository.GetProductList(_itemsPerPage * page, _itemsPerPage, includeImages: true, includerSeller: true, getAvailable: true);
 
             bool isSort = HttpContext.Request.Query.TryGetValue("sort", out var sortType);
             if (isSort)
