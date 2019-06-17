@@ -11,7 +11,7 @@ namespace MVC_Project.Services
         IQueryable<User> GetUserList { get; }
         User GetUser(string id);
         bool AddUser(RegisterUser user);
-        bool UpdateUser(string id, User newDetails);
+        bool UpdateUser(string id, UpdateUser newDetails);
     }
 
     public class UserRepository : IUserRepository
@@ -40,7 +40,7 @@ namespace MVC_Project.Services
             return _context.SaveChanges() > 0;
         }
 
-        public bool UpdateUser(string id, User newDetails)
+        public bool UpdateUser(string id, UpdateUser newDetails)
         {
             User user = _context.Users.FirstOrDefault(u => u.Id.Equals(id));
             if (user == null)
@@ -49,6 +49,7 @@ namespace MVC_Project.Services
             user.FirstName = newDetails.FirstName;
             user.LastName = newDetails.LastName;
             user.BirthDate = newDetails.BirthDate;
+
 
             return _context.SaveChanges() > 0;
         }

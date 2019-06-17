@@ -88,27 +88,46 @@ namespace MVC_Project.Controllers
 
         // ----- Edit details
 
-        public IActionResult UpdateDetails()
+        public IActionResult UpdateDetails(List<IdentityError> errors = null)
         {
             if (!User.Identity.IsAuthenticated)
                 return LogIn();
 
-            User model = _userRepo.GetUserList.FirstOrDefault(u => u.UserName == User.Identity.Name);
-            return View(model);
+            ViewData["errors"] = errors;
+
+            User user = _userRepo.GetUserList.FirstOrDefault(u => u.UserName == User.Identity.Name);
+
+            return View(new UpdateUser
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                BirthDate = user.BirthDate,
+                Email = user.Email,
+            });
         }
 
         [HttpPost]
-        public IActionResult UpdateDetails(User newDetails)
+        public async Task<IActionResult> UpdateDetails(UpdateUser newDetails)
         {
             if (!User.Identity.IsAuthenticated)
+            {
                 return LogIn();
+            }
 
-            string userID = _userRepo.GetUserList.FirstOrDefault(u => u.UserName == User.Identity.Name)?.Id;
-            if (userID == default)
+            User user = _userRepo.GetUserList.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            if (user == null)
+            {
                 return LogIn();
-
-            bool success = _userRepo.UpdateUser(userID, newDetails);
-            return UpdateDetails();
+            }
+            IdentityResult result = null;
+            List<IdentityError> errors = null;
+            if (!string.IsNullOrEmpty(newDetails.CurrentPassword))
+            {
+                result = await _userManager.ChangePasswordAsync(user, newDetails.CurrentPassword, newDetails.Password);
+                errors = result.Errors.ToList();
+            }
+            _userRepo.UpdateUser(user.Id, newDetails);
+            return UpdateDetails(errors);
         }
     }
 }
