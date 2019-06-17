@@ -67,11 +67,24 @@
 			Added by: @userRepo.GetUser(Model.SellerId) Posted Date: @Model.Date.ToString("MMMM dd yyyy")
 		</div>
 
-		@if (User.Identity.IsAuthenticated && User.Identity.Name == userRepo.GetUser(Model.SellerId).UserName)
+		if user is owner
+		no add button
+		edit button
+
+		if user is admin
+		edit button
+
+		if user is admin or owner
+		add edit button
+		if user is not owner
+		add buy button
+
+		@if (User.Identity.Name == userRepo.GetUser(Model.SellerId).UserName) // or user is admin // If owner or admin
 		{
-			<a value="Add To Cart" class="btn btn-danger btn-lg btn-block" asp-controller="Home" asp-action="RemoveProduct" asp-route-id="@Model.Id">Remove product</a>
+			<a value="Add To Cart" class="btn btn-danger btn-lg btn-block" asp-controller="Home" asp-action="EditProduct" asp-route-id="@Model.Id">Edit product</a>
 		}
-		else
+
+		@if (User.Identity.Name != userRepo.GetUser(Model.SellerId).UserName || !User.Identity.IsAuthenticated) // If not owning user or not logged int
 		{
 			<a value="Add To Cart" class="btn btn-primary btn-lg btn-block" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id">Add to cart</a>
 		}

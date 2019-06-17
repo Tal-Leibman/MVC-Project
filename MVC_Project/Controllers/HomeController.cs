@@ -42,6 +42,8 @@ namespace MVC_Project.Controllers
             return View(postList.ToList());
         }
 
+        public IActionResult Error() => View();
+
         public IActionResult ProductDetails(long id)
         {
             Product product = _productRepository.GetProduct(id, includeImages: true, includerSeller: true, getAvailable: true);
@@ -61,11 +63,27 @@ namespace MVC_Project.Controllers
             return View("ProductError");
         }
 
-        public IActionResult Error() => View();
+        public IActionResult EditProduct(long id)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                Product product = _productRepository.GetProduct(id);
+                if (product.Seller.UserName == User.Identity.Name)
+                    return View(product);
+            }
+
+            return View("ProductError");
+        }
+
+        [HttpPut]
+        public IActionResult EditProduct(Product product)
+        {
+            return View();
+        }
 
         IQueryable<Product> SortProducts(IQueryable<Product> postList, string sortType)
         {
-            bool isDescending = HttpContext.Request.Query.TryGetValue("descending", out var asec);
+            bool isDescending = HttpContext.Request.Query.TryGetValue("descending", out var _);
             if (isDescending)
             {
                 switch (sortType)
@@ -88,6 +106,5 @@ namespace MVC_Project.Controllers
             }
             return null;
         }
-
     }
 }
