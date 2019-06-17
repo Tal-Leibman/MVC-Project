@@ -1,24 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MVC_Project.Models
 {
-    public class RegisterUser
+    public class UpdateUser
     {
-        [Display(Name = "User name")]
-        [MaxLength(50)]
-        [Required]
-        public string UserName { get; set; }
 
         [MaxLength(60)]
-        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Current Password")]
+        public string CurrentPassword { get; set; }
+
+        [MaxLength(60)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [MaxLength(60)]
-        [Required]
         [DataType(DataType.Password)]
-        [Display(Name ="Confirm Password")]
+        [Display(Name = "Confirm Password")]
         [Compare("Password", ErrorMessage = "Confirm password doesn't match")]
         public string ConfirmPassword { get; set; }
 
@@ -32,12 +34,12 @@ namespace MVC_Project.Models
 
         [Display(Name = "E-Mail")]
         [MaxLength(254)]
-        [Required]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         [Display(Name = "Birth Date")]
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
+
     }
 }

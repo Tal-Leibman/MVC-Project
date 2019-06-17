@@ -39,9 +39,13 @@ namespace MVC_Project
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, StoreDataContext dataContext)
         {
             if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
+            }
             else
+            {
                 app.UseExceptionHandler("/error");
+            }
 
             //dataContext.Database.EnsureDeleted();
             dataContext.Database.EnsureCreated();

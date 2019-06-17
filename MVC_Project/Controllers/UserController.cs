@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MVC_Project.Helpers;
 using MVC_Project.Models;
 using MVC_Project.Services;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -50,10 +51,10 @@ namespace MVC_Project.Controllers
 
         // ----- Registering
 
-        public IActionResult Register(bool userExists = false)
+        public IActionResult Register(List<IdentityError> errors = null)
         {
             ViewBag.SelectedNavigation = "register-index-nav";
-            ViewBag.UserExists = userExists;
+            ViewData["errors"] = errors;
             return View();
         }
 
@@ -61,7 +62,13 @@ namespace MVC_Project.Controllers
         public async Task<IActionResult> Register(RegisterUser registerUser)
         {
             if (!registerUser.Validate())
-                return Register(false);
+            {
+                var errorlist = new List<IdentityError>(1)
+                {
+                    new IdentityError { Description = "Invalid User input for registration" }
+                };
+                return Register(errors: errorlist);
+            }
 
             var newUser = new User()
             {
@@ -71,34 +78,56 @@ namespace MVC_Project.Controllers
                 LastName = registerUser.LastName,
                 BirthDate = registerUser.BirthDate,
             };
-
             IdentityResult res = await _userManager.CreateAsync(newUser, registerUser.Password);
-            return res == IdentityResult.Success ? RedirectToAction("LogIn") : Register(true);
+            if (res.Succeeded)
+            {
+                return RedirectToAction("Login");
+            }
+            return Register(res.Errors.ToList());
         }
 
         // ----- Edit details
 
-        public IActionResult UpdateDetails()
+        public IActionResult UpdateDetails(List<IdentityError> errors = null)
         {
             if (!User.Identity.IsAuthenticated)
                 return LogIn();
 
-            User model = _userRepo.GetUserList.FirstOrDefault(u => u.UserName == User.Identity.Name);
-            return View(model);
+            ViewData["errors"] = errors;
+
+            User user = _userRepo.GetUserList.FirstOrDefault(u => u.UserName == User.Identity.Name);
+
+            return View(new UpdateUser
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                BirthDate = user.BirthDate,
+                Email = user.Email,
+            });
         }
 
         [HttpPost]
-        public IActionResult UpdateDetails(User newDetails)
+        public async Task<IActionResult> UpdateDetails(UpdateUser newDetails)
         {
             if (!User.Identity.IsAuthenticated)
+            {
                 return LogIn();
+            }
 
-            string userID = _userRepo.GetUserList.FirstOrDefault(u => u.UserName == User.Identity.Name)?.Id;
-            if (userID == default)
+            User user = _userRepo.GetUserList.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            if (user == null)
+            {
                 return LogIn();
-
-            bool success = _userRepo.UpdateUser(userID, newDetails);
-            return UpdateDetails();
+            }
+            IdentityResult result = null;
+            List<IdentityError> errors = null;
+            if (!string.IsNullOrEmpty(newDetails.CurrentPassword))
+            {
+                result = await _userManager.ChangePasswordAsync(user, newDetails.CurrentPassword, newDetails.Password);
+                errors = result.Errors.ToList();
+            }
+            _userRepo.UpdateUser(user.Id, newDetails);
+            return UpdateDetails(errors);
         }
     }
 }

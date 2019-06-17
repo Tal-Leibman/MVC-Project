@@ -30,6 +30,7 @@ namespace MVC_Project.Helpers
                 && !string.IsNullOrEmpty(registeringUser.Email)
                 && !string.IsNullOrEmpty(registeringUser.FirstName)
                 && !string.IsNullOrEmpty(registeringUser.LastName)
+                && registeringUser.Password == registeringUser.ConfirmPassword
                 && registeringUser.BirthDate != null;
         }
     }
