@@ -1,0 +1,34 @@
+﻿@*to do: Move to separate, product controller*@
+
+@model ProductAddition
+@{ ViewData["Title"] = "EditProduct";}
+@inject MVC_Project.Services.IAllowedMimes mimeService
+
+<form asp-controller="AddPRoduct" asp-action="Index" method="post" enctype="multipart/form-data">
+	<div class="form-group">
+		<h2>Add Product</h2>
+		<div>
+			<label asp-for="Title"></label>
+			<input asp-for="Title" class="form-control" />
+		</div>
+		<div>
+			<label asp-for="ShortDescription"></label>
+			<input asp-for="ShortDescription" class="form-control" />
+		</div>
+		<div>
+			<label asp-for="LongDescription"></label>
+			<input asp-for="LongDescription" class="form-control" />
+		</div>
+		<div>
+			<label asp-for="Price"></label>
+			<input asp-for="Price" type="number" step="0.01" class="form-control" />
+		</div>
+		<div>
+			<label asp-for="Images"></label>
+			<input asp-for="Images" class="form-control-file" multiple accept=@mimeService.GetAllowed() />
+		</div>
+
+		<div asp-validation-summary="All"></div>
+		<input type="submit" class="btn btn-primary btn-block" value="Submit" />
+	</div>
+</form>
